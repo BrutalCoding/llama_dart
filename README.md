@@ -36,3 +36,6 @@ Use cases that [should be supported](https://github.com/flutter/flutter/issues/1
 - flutter test / dart test
 - add-2-app (e.g. flutter build macos-framework for MacOS)
 - flutter run -dflutter-tester
+
+## Coming Soon
+Soon available in your local area. Jokes aside, this plugin is meant to easily integrate llama.cpp capabilities in your Flutter or Dart apps.
