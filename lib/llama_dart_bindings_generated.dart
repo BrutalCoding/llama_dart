@@ -8,27 +8,3487 @@
 // ignore_for_file: type=lint
 import 'dart:ffi' as ffi;
 
-/// A very short-lived native function.
-///
-/// For very short-lived functions, it is fine to call them on the main isolate.
-/// They will block the Dart execution while running the native function, so
-/// only do this for native functions which are guaranteed to be short-lived.
-@ffi.Native<ffi.IntPtr Function(ffi.IntPtr, ffi.IntPtr)>(symbol: 'sum')
-external int sum(
-  int a,
-  int b,
+/// misc
+@ffi.Native<ffi.Void Function()>(symbol: 'ggml_time_init')
+external void ggml_time_init();
+
+@ffi.Native<ffi.Int64 Function()>(symbol: 'ggml_time_ms')
+external int ggml_time_ms();
+
+@ffi.Native<ffi.Int64 Function()>(symbol: 'ggml_time_us')
+external int ggml_time_us();
+
+@ffi.Native<ffi.Int64 Function()>(symbol: 'ggml_cycles')
+external int ggml_cycles();
+
+@ffi.Native<ffi.Int64 Function()>(symbol: 'ggml_cycles_per_ms')
+external int ggml_cycles_per_ms();
+
+@ffi.Native<ffi.Void Function()>(symbol: 'ggml_numa_init')
+external void ggml_numa_init();
+
+@ffi.Native<ffi.Bool Function()>(symbol: 'ggml_is_numa')
+external bool ggml_is_numa();
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<ggml_object>)>(
+    symbol: 'ggml_print_object')
+external void ggml_print_object(
+  ffi.Pointer<ggml_object> obj,
 );
 
-/// A longer lived native function, which occupies the thread calling it.
-///
-/// Do not call these kind of native functions in the main isolate. They will
-/// block Dart execution. This will cause dropped frames in Flutter applications.
-/// Instead, call these native functions on a separate isolate.
-@ffi.Native<ffi.IntPtr Function(ffi.IntPtr, ffi.IntPtr)>(
-    symbol: 'sum_long_running')
-external int sum_long_running(
-  int a,
-  int b,
+@ffi.Native<ffi.Void Function(ffi.Pointer<ggml_context>)>(
+    symbol: 'ggml_print_objects')
+external void ggml_print_objects(
+  ffi.Pointer<ggml_context> ctx,
+);
+
+@ffi.Native<ffi.Int64 Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_nelements')
+external int ggml_nelements(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<ffi.Int64 Function(ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_nrows')
+external int ggml_nrows(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_nbytes')
+external int ggml_nbytes(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_nbytes_pad')
+external int ggml_nbytes_pad(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Pointer<ggml_tensor>, ffi.Int)>(
+    symbol: 'ggml_nbytes_split')
+external int ggml_nbytes_split(
+  ffi.Pointer<ggml_tensor> tensor,
+  int nrows_split,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Int32)>(symbol: 'ggml_blck_size')
+external int ggml_blck_size(
+  int type,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Int32)>(symbol: 'ggml_type_size')
+external int ggml_type_size(
+  int type,
+);
+
+@ffi.Native<ffi.Float Function(ffi.Int32)>(symbol: 'ggml_type_sizef')
+external double ggml_type_sizef(
+  int type,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Int32)>(symbol: 'ggml_type_name')
+external ffi.Pointer<ffi.Char> ggml_type_name(
+  int type,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Int32)>(symbol: 'ggml_op_name')
+external ffi.Pointer<ffi.Char> ggml_op_name(
+  int op,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Int32)>(symbol: 'ggml_op_symbol')
+external ffi.Pointer<ffi.Char> ggml_op_symbol(
+  int op,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_element_size')
+external int ggml_element_size(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<ffi.Bool Function(ffi.Int32)>(symbol: 'ggml_is_quantized')
+external bool ggml_is_quantized(
+  int type,
+);
+
+/// TODO: temporary until model loading of ggml examples is refactored
+@ffi.Native<ffi.Int32 Function(ffi.Int32)>(symbol: 'ggml_ftype_to_ggml_type')
+external int ggml_ftype_to_ggml_type(
+  int ftype,
+);
+
+@ffi.Native<ffi.Bool Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_is_transposed')
+external bool ggml_is_transposed(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<ffi.Bool Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_is_contiguous')
+external bool ggml_is_contiguous(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<ffi.Bool Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_is_permuted')
+external bool ggml_is_permuted(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<
+        ffi.Bool Function(ffi.Pointer<ggml_tensor>, ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_are_same_shape')
+external bool ggml_are_same_shape(
+  ffi.Pointer<ggml_tensor> t0,
+  ffi.Pointer<ggml_tensor> t1,
+);
+
+/// use this to compute the memory overhead of a tensor
+@ffi.Native<ffi.Size Function()>(symbol: 'ggml_tensor_overhead')
+external int ggml_tensor_overhead();
+
+/// main
+@ffi.Native<ffi.Pointer<ggml_context> Function(ggml_init_params)>(
+    symbol: 'ggml_init')
+external ffi.Pointer<ggml_context> ggml_init(
+  ggml_init_params params,
+);
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<ggml_context>)>(symbol: 'ggml_free')
+external void ggml_free(
+  ffi.Pointer<ggml_context> ctx,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Pointer<ggml_context>)>(
+    symbol: 'ggml_used_mem')
+external int ggml_used_mem(
+  ffi.Pointer<ggml_context> ctx,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Pointer<ggml_context>, ggml_scratch)>(
+    symbol: 'ggml_set_scratch')
+external int ggml_set_scratch(
+  ffi.Pointer<ggml_context> ctx,
+  ggml_scratch scratch,
+);
+
+@ffi.Native<ffi.Bool Function(ffi.Pointer<ggml_context>)>(
+    symbol: 'ggml_get_no_alloc')
+external bool ggml_get_no_alloc(
+  ffi.Pointer<ggml_context> ctx,
+);
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<ggml_context>, ffi.Bool)>(
+    symbol: 'ggml_set_no_alloc')
+external void ggml_set_no_alloc(
+  ffi.Pointer<ggml_context> ctx,
+  bool no_alloc,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ggml_context>)>(
+    symbol: 'ggml_get_mem_buffer')
+external ffi.Pointer<ffi.Void> ggml_get_mem_buffer(
+  ffi.Pointer<ggml_context> ctx,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Pointer<ggml_context>)>(
+    symbol: 'ggml_get_mem_size')
+external int ggml_get_mem_size(
+  ffi.Pointer<ggml_context> ctx,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Pointer<ggml_context>)>(
+    symbol: 'ggml_get_max_tensor_size')
+external int ggml_get_max_tensor_size(
+  ffi.Pointer<ggml_context> ctx,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>, ffi.Int32,
+        ffi.Int, ffi.Pointer<ffi.Int64>)>(symbol: 'ggml_new_tensor')
+external ffi.Pointer<ggml_tensor> ggml_new_tensor(
+  ffi.Pointer<ggml_context> ctx,
+  int type,
+  int n_dims,
+  ffi.Pointer<ffi.Int64> ne,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>, ffi.Int32,
+        ffi.Int64)>(symbol: 'ggml_new_tensor_1d')
+external ffi.Pointer<ggml_tensor> ggml_new_tensor_1d(
+  ffi.Pointer<ggml_context> ctx,
+  int type,
+  int ne0,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>, ffi.Int32,
+        ffi.Int64, ffi.Int64)>(symbol: 'ggml_new_tensor_2d')
+external ffi.Pointer<ggml_tensor> ggml_new_tensor_2d(
+  ffi.Pointer<ggml_context> ctx,
+  int type,
+  int ne0,
+  int ne1,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>, ffi.Int32,
+        ffi.Int64, ffi.Int64, ffi.Int64)>(symbol: 'ggml_new_tensor_3d')
+external ffi.Pointer<ggml_tensor> ggml_new_tensor_3d(
+  ffi.Pointer<ggml_context> ctx,
+  int type,
+  int ne0,
+  int ne1,
+  int ne2,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Int32,
+        ffi.Int64,
+        ffi.Int64,
+        ffi.Int64,
+        ffi.Int64)>(symbol: 'ggml_new_tensor_4d')
+external ffi.Pointer<ggml_tensor> ggml_new_tensor_4d(
+  ffi.Pointer<ggml_context> ctx,
+  int type,
+  int ne0,
+  int ne1,
+  int ne2,
+  int ne3,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>, ffi.Int32)>(symbol: 'ggml_new_i32')
+external ffi.Pointer<ggml_tensor> ggml_new_i32(
+  ffi.Pointer<ggml_context> ctx,
+  int value,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>, ffi.Float)>(symbol: 'ggml_new_f32')
+external ffi.Pointer<ggml_tensor> ggml_new_f32(
+  ffi.Pointer<ggml_context> ctx,
+  double value,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_dup_tensor')
+external ffi.Pointer<ggml_tensor> ggml_dup_tensor(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> src,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_view_tensor')
+external ffi.Pointer<ggml_tensor> ggml_view_tensor(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> src,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ffi.Char>)>(symbol: 'ggml_get_tensor')
+external ffi.Pointer<ggml_tensor> ggml_get_tensor(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ffi.Char> name,
+);
+
+@ffi.Native<ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_set_zero')
+external ffi.Pointer<ggml_tensor> ggml_set_zero(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_tensor>, ffi.Int32)>(symbol: 'ggml_set_i32')
+external ffi.Pointer<ggml_tensor> ggml_set_i32(
+  ffi.Pointer<ggml_tensor> tensor,
+  int value,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_tensor>, ffi.Float)>(symbol: 'ggml_set_f32')
+external ffi.Pointer<ggml_tensor> ggml_set_f32(
+  ffi.Pointer<ggml_tensor> tensor,
+  double value,
+);
+
+@ffi.Native<ffi.Int32 Function(ffi.Pointer<ggml_tensor>, ffi.Int)>(
+    symbol: 'ggml_get_i32_1d')
+external int ggml_get_i32_1d(
+  ffi.Pointer<ggml_tensor> tensor,
+  int i,
+);
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<ggml_tensor>, ffi.Int, ffi.Int32)>(
+    symbol: 'ggml_set_i32_1d')
+external void ggml_set_i32_1d(
+  ffi.Pointer<ggml_tensor> tensor,
+  int i,
+  int value,
+);
+
+@ffi.Native<ffi.Float Function(ffi.Pointer<ggml_tensor>, ffi.Int)>(
+    symbol: 'ggml_get_f32_1d')
+external double ggml_get_f32_1d(
+  ffi.Pointer<ggml_tensor> tensor,
+  int i,
+);
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<ggml_tensor>, ffi.Int, ffi.Float)>(
+    symbol: 'ggml_set_f32_1d')
+external void ggml_set_f32_1d(
+  ffi.Pointer<ggml_tensor> tensor,
+  int i,
+  double value,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Void> Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_get_data')
+external ffi.Pointer<ffi.Void> ggml_get_data(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Float> Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_get_data_f32')
+external ffi.Pointer<ffi.Float> ggml_get_data_f32(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<ffi.Int32 Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_get_unary_op')
+external int ggml_get_unary_op(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_get_name')
+external ffi.Pointer<ffi.Char> ggml_get_name(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ffi.Char>)>(symbol: 'ggml_set_name')
+external ffi.Pointer<ggml_tensor> ggml_set_name(
+  ffi.Pointer<ggml_tensor> tensor,
+  ffi.Pointer<ffi.Char> name,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ffi.Char>)>(symbol: 'ggml_format_name')
+external ffi.Pointer<ggml_tensor> ggml_format_name(
+  ffi.Pointer<ggml_tensor> tensor,
+  ffi.Pointer<ffi.Char> fmt,
+);
+
+/// operations on tensors with backpropagation
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_dup')
+external ffi.Pointer<ggml_tensor> ggml_dup(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// in-place, returns view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_dup_inplace')
+external ffi.Pointer<ggml_tensor> ggml_dup_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_add')
+external ffi.Pointer<ggml_tensor> ggml_add(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_add_inplace')
+external ffi.Pointer<ggml_tensor> ggml_add_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_add1')
+external ffi.Pointer<ggml_tensor> ggml_add1(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_add1_inplace')
+external ffi.Pointer<ggml_tensor> ggml_add1_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Size,
+        ffi.Size,
+        ffi.Size,
+        ffi.Size)>(symbol: 'ggml_acc')
+external ffi.Pointer<ggml_tensor> ggml_acc(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int nb1,
+  int nb2,
+  int nb3,
+  int offset,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Size,
+        ffi.Size,
+        ffi.Size,
+        ffi.Size)>(symbol: 'ggml_acc_inplace')
+external ffi.Pointer<ggml_tensor> ggml_acc_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int nb1,
+  int nb2,
+  int nb3,
+  int offset,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_sub')
+external ffi.Pointer<ggml_tensor> ggml_sub(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_sub_inplace')
+external ffi.Pointer<ggml_tensor> ggml_sub_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_mul')
+external ffi.Pointer<ggml_tensor> ggml_mul(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_mul_inplace')
+external ffi.Pointer<ggml_tensor> ggml_mul_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_div')
+external ffi.Pointer<ggml_tensor> ggml_div(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_div_inplace')
+external ffi.Pointer<ggml_tensor> ggml_div_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_sqr')
+external ffi.Pointer<ggml_tensor> ggml_sqr(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_sqr_inplace')
+external ffi.Pointer<ggml_tensor> ggml_sqr_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_sqrt')
+external ffi.Pointer<ggml_tensor> ggml_sqrt(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_sqrt_inplace')
+external ffi.Pointer<ggml_tensor> ggml_sqrt_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_log')
+external ffi.Pointer<ggml_tensor> ggml_log(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_log_inplace')
+external ffi.Pointer<ggml_tensor> ggml_log_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// return scalar
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_sum')
+external ffi.Pointer<ggml_tensor> ggml_sum(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// sums along rows, with input shape [a,b,c,d] return shape [1,b,c,d]
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_sum_rows')
+external ffi.Pointer<ggml_tensor> ggml_sum_rows(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// mean along rows
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_mean')
+external ffi.Pointer<ggml_tensor> ggml_mean(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// argmax along rows
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_argmax')
+external ffi.Pointer<ggml_tensor> ggml_argmax(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// if a is the same shape as b, and a is not parameter, return a
+/// otherwise, return a new tensor: repeat(a) to fit in b
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_repeat')
+external ffi.Pointer<ggml_tensor> ggml_repeat(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_repeat_back')
+external ffi.Pointer<ggml_tensor> ggml_repeat_back(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// concat a and b on dim 2
+/// used in stable-diffusion
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_concat')
+external ffi.Pointer<ggml_tensor> ggml_concat(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_abs')
+external ffi.Pointer<ggml_tensor> ggml_abs(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_abs_inplace')
+external ffi.Pointer<ggml_tensor> ggml_abs_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_sgn')
+external ffi.Pointer<ggml_tensor> ggml_sgn(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_sgn_inplace')
+external ffi.Pointer<ggml_tensor> ggml_sgn_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_neg')
+external ffi.Pointer<ggml_tensor> ggml_neg(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_neg_inplace')
+external ffi.Pointer<ggml_tensor> ggml_neg_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_step')
+external ffi.Pointer<ggml_tensor> ggml_step(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_step_inplace')
+external ffi.Pointer<ggml_tensor> ggml_step_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_tanh')
+external ffi.Pointer<ggml_tensor> ggml_tanh(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_tanh_inplace')
+external ffi.Pointer<ggml_tensor> ggml_tanh_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_elu')
+external ffi.Pointer<ggml_tensor> ggml_elu(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_elu_inplace')
+external ffi.Pointer<ggml_tensor> ggml_elu_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_relu')
+external ffi.Pointer<ggml_tensor> ggml_relu(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_relu_inplace')
+external ffi.Pointer<ggml_tensor> ggml_relu_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// TODO: double-check this computation is correct
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_gelu')
+external ffi.Pointer<ggml_tensor> ggml_gelu(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_gelu_inplace')
+external ffi.Pointer<ggml_tensor> ggml_gelu_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_gelu_quick')
+external ffi.Pointer<ggml_tensor> ggml_gelu_quick(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_gelu_quick_inplace')
+external ffi.Pointer<ggml_tensor> ggml_gelu_quick_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_silu')
+external ffi.Pointer<ggml_tensor> ggml_silu(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_silu_inplace')
+external ffi.Pointer<ggml_tensor> ggml_silu_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// a - x
+/// b - dy
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_silu_back')
+external ffi.Pointer<ggml_tensor> ggml_silu_back(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// normalize along rows
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Float)>(symbol: 'ggml_norm')
+external ffi.Pointer<ggml_tensor> ggml_norm(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  double eps,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Float)>(symbol: 'ggml_norm_inplace')
+external ffi.Pointer<ggml_tensor> ggml_norm_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  double eps,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Float)>(symbol: 'ggml_rms_norm')
+external ffi.Pointer<ggml_tensor> ggml_rms_norm(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  double eps,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Float)>(symbol: 'ggml_rms_norm_inplace')
+external ffi.Pointer<ggml_tensor> ggml_rms_norm_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  double eps,
+);
+
+/// group normalize along ne0*ne1*n_groups
+/// used in stable-diffusion
+/// TODO: eps is hardcoded to 1e-6 for now
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Int)>(symbol: 'ggml_group_norm')
+external ffi.Pointer<ggml_tensor> ggml_group_norm(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_groups,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Int)>(symbol: 'ggml_group_norm_inplace')
+external ffi.Pointer<ggml_tensor> ggml_group_norm_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_groups,
+);
+
+/// a - x
+/// b - dy
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Float)>(symbol: 'ggml_rms_norm_back')
+external ffi.Pointer<ggml_tensor> ggml_rms_norm_back(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  double eps,
+);
+
+/// A: n columns, m rows
+/// B: n columns, p rows  (i.e. we transpose it internally)
+/// result is m columns, p rows
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_mul_mat')
+external ffi.Pointer<ggml_tensor> ggml_mul_mat(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// A: m columns, n rows,
+/// B: p columns, n rows,
+/// result is m columns, p rows
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_out_prod')
+external ffi.Pointer<ggml_tensor> ggml_out_prod(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// operations on tensors without backpropagation
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_scale')
+external ffi.Pointer<ggml_tensor> ggml_scale(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// in-place, returns view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_scale_inplace')
+external ffi.Pointer<ggml_tensor> ggml_scale_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// b -> view(a,offset,nb1,nb2,3), return modified a
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Size,
+        ffi.Size,
+        ffi.Size,
+        ffi.Size)>(symbol: 'ggml_set')
+external ffi.Pointer<ggml_tensor> ggml_set(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int nb1,
+  int nb2,
+  int nb3,
+  int offset,
+);
+
+/// b -> view(a,offset,nb1,nb2,3), return view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Size,
+        ffi.Size,
+        ffi.Size,
+        ffi.Size)>(symbol: 'ggml_set_inplace')
+external ffi.Pointer<ggml_tensor> ggml_set_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int nb1,
+  int nb2,
+  int nb3,
+  int offset,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Size)>(symbol: 'ggml_set_1d')
+external ffi.Pointer<ggml_tensor> ggml_set_1d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int offset,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Size)>(symbol: 'ggml_set_1d_inplace')
+external ffi.Pointer<ggml_tensor> ggml_set_1d_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int offset,
+);
+
+/// b -> view(a,offset,nb1,nb2,3), return modified a
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Size,
+        ffi.Size)>(symbol: 'ggml_set_2d')
+external ffi.Pointer<ggml_tensor> ggml_set_2d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int nb1,
+  int offset,
+);
+
+/// b -> view(a,offset,nb1,nb2,3), return view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Size,
+        ffi.Size)>(symbol: 'ggml_set_2d_inplace')
+external ffi.Pointer<ggml_tensor> ggml_set_2d_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int nb1,
+  int offset,
+);
+
+/// a -> b, return view(b)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_cpy')
+external ffi.Pointer<ggml_tensor> ggml_cpy(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// a -> b, in-place, return view(b)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_cpy_inplace')
+external ffi.Pointer<ggml_tensor> ggml_cpy_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// make contiguous
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_cont')
+external ffi.Pointer<ggml_tensor> ggml_cont(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// make contiguous, in-place
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_cont_inplace')
+external ffi.Pointer<ggml_tensor> ggml_cont_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// return view(a), b specifies the new shape
+/// TODO: when we start computing gradient, make a copy instead of view
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_reshape')
+external ffi.Pointer<ggml_tensor> ggml_reshape(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// return view(a)
+/// TODO: when we start computing gradient, make a copy instead of view
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Int64)>(symbol: 'ggml_reshape_1d')
+external ffi.Pointer<ggml_tensor> ggml_reshape_1d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int ne0,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int64,
+        ffi.Int64)>(symbol: 'ggml_reshape_2d')
+external ffi.Pointer<ggml_tensor> ggml_reshape_2d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int ne0,
+  int ne1,
+);
+
+/// return view(a)
+/// TODO: when we start computing gradient, make a copy instead of view
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int64,
+        ffi.Int64,
+        ffi.Int64)>(symbol: 'ggml_reshape_3d')
+external ffi.Pointer<ggml_tensor> ggml_reshape_3d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int ne0,
+  int ne1,
+  int ne2,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int64,
+        ffi.Int64,
+        ffi.Int64,
+        ffi.Int64)>(symbol: 'ggml_reshape_4d')
+external ffi.Pointer<ggml_tensor> ggml_reshape_4d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int ne0,
+  int ne1,
+  int ne2,
+  int ne3,
+);
+
+/// offset in bytes
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Int64, ffi.Size)>(symbol: 'ggml_view_1d')
+external ffi.Pointer<ggml_tensor> ggml_view_1d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int ne0,
+  int offset,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int64,
+        ffi.Int64,
+        ffi.Size,
+        ffi.Size)>(symbol: 'ggml_view_2d')
+external ffi.Pointer<ggml_tensor> ggml_view_2d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int ne0,
+  int ne1,
+  int nb1,
+  int offset,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int64,
+        ffi.Int64,
+        ffi.Int64,
+        ffi.Size,
+        ffi.Size,
+        ffi.Size)>(symbol: 'ggml_view_3d')
+external ffi.Pointer<ggml_tensor> ggml_view_3d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int ne0,
+  int ne1,
+  int ne2,
+  int nb1,
+  int nb2,
+  int offset,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int64,
+        ffi.Int64,
+        ffi.Int64,
+        ffi.Int64,
+        ffi.Size,
+        ffi.Size,
+        ffi.Size,
+        ffi.Size)>(symbol: 'ggml_view_4d')
+external ffi.Pointer<ggml_tensor> ggml_view_4d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int ne0,
+  int ne1,
+  int ne2,
+  int ne3,
+  int nb1,
+  int nb2,
+  int nb3,
+  int offset,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int)>(symbol: 'ggml_permute')
+external ffi.Pointer<ggml_tensor> ggml_permute(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int axis0,
+  int axis1,
+  int axis2,
+  int axis3,
+);
+
+/// alias for ggml_permute(ctx, a, 1, 0, 2, 3)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_transpose')
+external ffi.Pointer<ggml_tensor> ggml_transpose(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_get_rows')
+external ffi.Pointer<ggml_tensor> ggml_get_rows(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_get_rows_back')
+external ffi.Pointer<ggml_tensor> ggml_get_rows_back(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ffi.Pointer<ggml_tensor> c,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_diag')
+external ffi.Pointer<ggml_tensor> ggml_diag(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// set elements above the diagonal to -INF
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Int)>(symbol: 'ggml_diag_mask_inf')
+external ffi.Pointer<ggml_tensor> ggml_diag_mask_inf(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_past,
+);
+
+/// in-place, returns view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int)>(symbol: 'ggml_diag_mask_inf_inplace')
+external ffi.Pointer<ggml_tensor> ggml_diag_mask_inf_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_past,
+);
+
+/// set elements above the diagonal to 0
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Int)>(symbol: 'ggml_diag_mask_zero')
+external ffi.Pointer<ggml_tensor> ggml_diag_mask_zero(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_past,
+);
+
+/// in-place, returns view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int)>(symbol: 'ggml_diag_mask_zero_inplace')
+external ffi.Pointer<ggml_tensor> ggml_diag_mask_zero_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_past,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_soft_max')
+external ffi.Pointer<ggml_tensor> ggml_soft_max(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+/// in-place, returns view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_soft_max_inplace')
+external ffi.Pointer<ggml_tensor> ggml_soft_max_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_soft_max_back')
+external ffi.Pointer<ggml_tensor> ggml_soft_max_back(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// in-place, returns view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_soft_max_back_inplace')
+external ffi.Pointer<ggml_tensor> ggml_soft_max_back_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// rotary position embedding
+/// if mode & 1 == 1, skip n_past elements
+/// if mode & 2 == 1, GPT-NeoX style
+/// if mode & 4 == 1, ChatGLM style
+/// TODO: avoid creating a new tensor every time
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int)>(symbol: 'ggml_rope')
+external ffi.Pointer<ggml_tensor> ggml_rope(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_past,
+  int n_dims,
+  int mode,
+  int n_ctx,
+);
+
+/// in-place, returns view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int)>(symbol: 'ggml_rope_inplace')
+external ffi.Pointer<ggml_tensor> ggml_rope_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_past,
+  int n_dims,
+  int mode,
+  int n_ctx,
+);
+
+/// custom RoPE
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Float,
+        ffi.Float)>(symbol: 'ggml_rope_custom')
+external ffi.Pointer<ggml_tensor> ggml_rope_custom(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_past,
+  int n_dims,
+  int mode,
+  int n_ctx,
+  double freq_base,
+  double freq_scale,
+);
+
+/// in-place, returns view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Float,
+        ffi.Float)>(symbol: 'ggml_rope_custom_inplace')
+external ffi.Pointer<ggml_tensor> ggml_rope_custom_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_past,
+  int n_dims,
+  int mode,
+  int n_ctx,
+  double freq_base,
+  double freq_scale,
+);
+
+/// xPos RoPE, in-place, returns view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Float,
+        ffi.Bool)>(symbol: 'ggml_rope_xpos_inplace')
+external ffi.Pointer<ggml_tensor> ggml_rope_xpos_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_past,
+  int n_dims,
+  double base,
+  bool down,
+);
+
+/// rotary position embedding backward, i.e compute dx from dy
+/// a - dy
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Float,
+        ffi.Float,
+        ffi.Float,
+        ffi.Bool)>(symbol: 'ggml_rope_back')
+external ffi.Pointer<ggml_tensor> ggml_rope_back(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_past,
+  int n_dims,
+  int mode,
+  int n_ctx,
+  double freq_base,
+  double freq_scale,
+  double xpos_base,
+  bool xpos_down,
+);
+
+/// alibi position embedding
+/// in-place, returns view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Float)>(symbol: 'ggml_alibi')
+external ffi.Pointer<ggml_tensor> ggml_alibi(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int n_past,
+  int n_head,
+  double bias_max,
+);
+
+/// clamp
+/// in-place, returns view(a)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Float, ffi.Float)>(symbol: 'ggml_clamp')
+external ffi.Pointer<ggml_tensor> ggml_clamp(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  double min,
+  double max,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int)>(symbol: 'ggml_conv_1d')
+external ffi.Pointer<ggml_tensor> ggml_conv_1d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int s0,
+  int p0,
+  int d0,
+);
+
+/// conv_1d with padding = half
+/// alias for ggml_conv_1d(a, b, s, a->ne[0]/2, d)
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int)>(symbol: 'ggml_conv_1d_ph')
+external ffi.Pointer<ggml_tensor> ggml_conv_1d_ph(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int s,
+  int d,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int)>(symbol: 'ggml_conv_2d')
+external ffi.Pointer<ggml_tensor> ggml_conv_2d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int s0,
+  int s1,
+  int p0,
+  int p1,
+  int d0,
+  int d1,
+);
+
+/// kernel size is a->ne[0] x a->ne[1]
+/// stride is equal to kernel size
+/// padding is zero
+/// example:
+/// a:     16   16    3  768
+/// b:   1024 1024    3    1
+/// res:   64   64  768    1
+/// used in sam
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_conv_2d_sk_p0')
+external ffi.Pointer<ggml_tensor> ggml_conv_2d_sk_p0(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+/// kernel size is a->ne[0] x a->ne[1]
+/// stride is 1
+/// padding is half
+/// example:
+/// a:      3    3    256  256
+/// b:     64   64    256    1
+/// res:   64   64    256    1
+/// used in sam
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_conv_2d_s1_ph')
+external ffi.Pointer<ggml_tensor> ggml_conv_2d_s1_ph(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int)>(symbol: 'ggml_conv_transpose_2d_p0')
+external ffi.Pointer<ggml_tensor> ggml_conv_transpose_2d_p0(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  int stride,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int32,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int)>(symbol: 'ggml_pool_1d')
+external ffi.Pointer<ggml_tensor> ggml_pool_1d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int op,
+  int k0,
+  int s0,
+  int p0,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int32,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int)>(symbol: 'ggml_pool_2d')
+external ffi.Pointer<ggml_tensor> ggml_pool_2d(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int op,
+  int k0,
+  int k1,
+  int s0,
+  int s1,
+  int p0,
+  int p1,
+);
+
+/// nearest interpolate
+/// used in stable-diffusion
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Int)>(symbol: 'ggml_upscale')
+external ffi.Pointer<ggml_tensor> ggml_upscale(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int scale_factor,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Bool)>(symbol: 'ggml_flash_attn')
+external ffi.Pointer<ggml_tensor> ggml_flash_attn(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> q,
+  ffi.Pointer<ggml_tensor> k,
+  ffi.Pointer<ggml_tensor> v,
+  bool masked,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Bool)>(symbol: 'ggml_flash_attn_back')
+external ffi.Pointer<ggml_tensor> ggml_flash_attn_back(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> q,
+  ffi.Pointer<ggml_tensor> k,
+  ffi.Pointer<ggml_tensor> v,
+  ffi.Pointer<ggml_tensor> d,
+  bool masked,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_flash_ff')
+external ffi.Pointer<ggml_tensor> ggml_flash_ff(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b0,
+  ffi.Pointer<ggml_tensor> b1,
+  ffi.Pointer<ggml_tensor> c0,
+  ffi.Pointer<ggml_tensor> c1,
+);
+
+/// partition into non-overlapping windows with padding if needed
+/// example:
+/// a:   768   64   64    1
+/// w:    14
+/// res: 768   14   14    25
+/// used in sam
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Int)>(symbol: 'ggml_win_part')
+external ffi.Pointer<ggml_tensor> ggml_win_part(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int w,
+);
+
+/// reverse of ggml_win_part
+/// used in sam
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Int)>(symbol: 'ggml_win_unpart')
+external ffi.Pointer<ggml_tensor> ggml_win_unpart(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int w0,
+  int h0,
+  int w,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Int32)>(symbol: 'ggml_unary')
+external ffi.Pointer<ggml_tensor> ggml_unary(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int op,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Int32)>(symbol: 'ggml_unary_inplace')
+external ffi.Pointer<ggml_tensor> ggml_unary_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int op,
+);
+
+/// used in sam
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>, ffi.Int, ffi.Int)>(symbol: 'ggml_get_rel_pos')
+external ffi.Pointer<ggml_tensor> ggml_get_rel_pos(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  int qh,
+  int kh,
+);
+
+/// used in sam
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_add_rel_pos')
+external ffi.Pointer<ggml_tensor> ggml_add_rel_pos(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> pw,
+  ffi.Pointer<ggml_tensor> ph,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_add_rel_pos_inplace')
+external ffi.Pointer<ggml_tensor> ggml_add_rel_pos_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> pw,
+  ffi.Pointer<ggml_tensor> ph,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_unary_op_f32_t)>(symbol: 'ggml_map_unary_f32')
+external ffi.Pointer<ggml_tensor> ggml_map_unary_f32(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ggml_unary_op_f32_t fun,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_unary_op_f32_t)>(symbol: 'ggml_map_unary_inplace_f32')
+external ffi.Pointer<ggml_tensor> ggml_map_unary_inplace_f32(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ggml_unary_op_f32_t fun,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_binary_op_f32_t)>(symbol: 'ggml_map_binary_f32')
+external ffi.Pointer<ggml_tensor> ggml_map_binary_f32(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ggml_binary_op_f32_t fun,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_binary_op_f32_t)>(symbol: 'ggml_map_binary_inplace_f32')
+external ffi.Pointer<ggml_tensor> ggml_map_binary_inplace_f32(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ggml_binary_op_f32_t fun,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom1_op_f32_t)>(symbol: 'ggml_map_custom1_f32')
+external ffi.Pointer<ggml_tensor> ggml_map_custom1_f32(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ggml_custom1_op_f32_t fun,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom1_op_f32_t)>(symbol: 'ggml_map_custom1_inplace_f32')
+external ffi.Pointer<ggml_tensor> ggml_map_custom1_inplace_f32(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ggml_custom1_op_f32_t fun,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom2_op_f32_t)>(symbol: 'ggml_map_custom2_f32')
+external ffi.Pointer<ggml_tensor> ggml_map_custom2_f32(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ggml_custom2_op_f32_t fun,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom2_op_f32_t)>(symbol: 'ggml_map_custom2_inplace_f32')
+external ffi.Pointer<ggml_tensor> ggml_map_custom2_inplace_f32(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ggml_custom2_op_f32_t fun,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom3_op_f32_t)>(symbol: 'ggml_map_custom3_f32')
+external ffi.Pointer<ggml_tensor> ggml_map_custom3_f32(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ffi.Pointer<ggml_tensor> c,
+  ggml_custom3_op_f32_t fun,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom3_op_f32_t)>(symbol: 'ggml_map_custom3_inplace_f32')
+external ffi.Pointer<ggml_tensor> ggml_map_custom3_inplace_f32(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ffi.Pointer<ggml_tensor> c,
+  ggml_custom3_op_f32_t fun,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom1_op_t,
+        ffi.Int,
+        ffi.Pointer<ffi.Void>)>(symbol: 'ggml_map_custom1')
+external ffi.Pointer<ggml_tensor> ggml_map_custom1(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ggml_custom1_op_t fun,
+  int n_tasks,
+  ffi.Pointer<ffi.Void> userdata,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom1_op_t,
+        ffi.Int,
+        ffi.Pointer<ffi.Void>)>(symbol: 'ggml_map_custom1_inplace')
+external ffi.Pointer<ggml_tensor> ggml_map_custom1_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ggml_custom1_op_t fun,
+  int n_tasks,
+  ffi.Pointer<ffi.Void> userdata,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom2_op_t,
+        ffi.Int,
+        ffi.Pointer<ffi.Void>)>(symbol: 'ggml_map_custom2')
+external ffi.Pointer<ggml_tensor> ggml_map_custom2(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ggml_custom2_op_t fun,
+  int n_tasks,
+  ffi.Pointer<ffi.Void> userdata,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom2_op_t,
+        ffi.Int,
+        ffi.Pointer<ffi.Void>)>(symbol: 'ggml_map_custom2_inplace')
+external ffi.Pointer<ggml_tensor> ggml_map_custom2_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ggml_custom2_op_t fun,
+  int n_tasks,
+  ffi.Pointer<ffi.Void> userdata,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom3_op_t,
+        ffi.Int,
+        ffi.Pointer<ffi.Void>)>(symbol: 'ggml_map_custom3')
+external ffi.Pointer<ggml_tensor> ggml_map_custom3(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ffi.Pointer<ggml_tensor> c,
+  ggml_custom3_op_t fun,
+  int n_tasks,
+  ffi.Pointer<ffi.Void> userdata,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ggml_custom3_op_t,
+        ffi.Int,
+        ffi.Pointer<ffi.Void>)>(symbol: 'ggml_map_custom3_inplace')
+external ffi.Pointer<ggml_tensor> ggml_map_custom3_inplace(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ffi.Pointer<ggml_tensor> c,
+  ggml_custom3_op_t fun,
+  int n_tasks,
+  ffi.Pointer<ffi.Void> userdata,
+);
+
+/// loss function
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_cross_entropy_loss')
+external ffi.Pointer<ggml_tensor> ggml_cross_entropy_loss(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_cross_entropy_loss_back')
+external ffi.Pointer<ggml_tensor> ggml_cross_entropy_loss_back(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> a,
+  ffi.Pointer<ggml_tensor> b,
+  ffi.Pointer<ggml_tensor> c,
+);
+
+/// automatic differentiation
+@ffi.Native<
+        ffi.Void Function(ffi.Pointer<ggml_context>, ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_set_param')
+external void ggml_set_param(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<
+        ffi.Void Function(ffi.Pointer<ggml_cgraph>, ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_build_forward_expand')
+external void ggml_build_forward_expand(
+  ffi.Pointer<ggml_cgraph> cgraph,
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<
+    ffi.Void Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_cgraph>,
+        ffi.Pointer<ggml_cgraph>,
+        ffi.Bool)>(symbol: 'ggml_build_backward_expand')
+external void ggml_build_backward_expand(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_cgraph> gf,
+  ffi.Pointer<ggml_cgraph> gb,
+  bool keep,
+);
+
+@ffi.Native<ggml_cgraph Function(ffi.Pointer<ggml_tensor>)>(
+    symbol: 'ggml_build_forward')
+external ggml_cgraph ggml_build_forward(
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<
+    ggml_cgraph Function(ffi.Pointer<ggml_context>, ffi.Pointer<ggml_cgraph>,
+        ffi.Bool)>(symbol: 'ggml_build_backward')
+external ggml_cgraph ggml_build_backward(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_cgraph> gf,
+  bool keep,
+);
+
+/// graph allocation in a context
+@ffi.Native<ffi.Pointer<ggml_cgraph> Function(ffi.Pointer<ggml_context>)>(
+    symbol: 'ggml_new_graph')
+external ffi.Pointer<ggml_cgraph> ggml_new_graph(
+  ffi.Pointer<ggml_context> ctx,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_cgraph> Function(ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_build_forward_ctx')
+external ffi.Pointer<ggml_cgraph> ggml_build_forward_ctx(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<ffi.Size Function()>(symbol: 'ggml_graph_overhead')
+external int ggml_graph_overhead();
+
+/// ggml_graph_plan() has to be called before ggml_graph_compute()
+/// when plan.work_size > 0, caller must allocate memory for plan.work_data
+@ffi.Native<ggml_cplan Function(ffi.Pointer<ggml_cgraph>, ffi.Int)>(
+    symbol: 'ggml_graph_plan')
+external ggml_cplan ggml_graph_plan(
+  ffi.Pointer<ggml_cgraph> cgraph,
+  int n_threads,
+);
+
+@ffi.Native<
+        ffi.Int Function(ffi.Pointer<ggml_cgraph>, ffi.Pointer<ggml_cplan>)>(
+    symbol: 'ggml_graph_compute')
+external int ggml_graph_compute(
+  ffi.Pointer<ggml_cgraph> cgraph,
+  ffi.Pointer<ggml_cplan> cplan,
+);
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<ggml_cgraph>)>(
+    symbol: 'ggml_graph_reset')
+external void ggml_graph_reset(
+  ffi.Pointer<ggml_cgraph> cgraph,
+);
+
+/// same as ggml_graph_compute() but the work data is allocated as a part of the context
+/// note: the drawback of this API is that you must have ensured that the context has enough memory for the work data
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<ggml_context>, ffi.Pointer<ggml_cgraph>,
+        ffi.Int)>(symbol: 'ggml_graph_compute_with_ctx')
+external void ggml_graph_compute_with_ctx(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_cgraph> cgraph,
+  int n_threads,
+);
+
+@ffi.Native<
+    ffi.Pointer<ggml_tensor> Function(ffi.Pointer<ggml_cgraph>,
+        ffi.Pointer<ffi.Char>)>(symbol: 'ggml_graph_get_tensor')
+external ffi.Pointer<ggml_tensor> ggml_graph_get_tensor(
+  ffi.Pointer<ggml_cgraph> cgraph,
+  ffi.Pointer<ffi.Char> name,
+);
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<ggml_cgraph>, ffi.Pointer<ffi.Char>)>(
+    symbol: 'ggml_graph_export')
+external void ggml_graph_export(
+  ffi.Pointer<ggml_cgraph> cgraph,
+  ffi.Pointer<ffi.Char> fname,
+);
+
+@ffi.Native<
+    ggml_cgraph Function(
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ggml_context>>,
+        ffi.Pointer<ffi.Pointer<ggml_context>>)>(symbol: 'ggml_graph_import')
+external ggml_cgraph ggml_graph_import(
+  ffi.Pointer<ffi.Char> fname,
+  ffi.Pointer<ffi.Pointer<ggml_context>> ctx_data,
+  ffi.Pointer<ffi.Pointer<ggml_context>> ctx_eval,
+);
+
+/// print info and performance information for the graph
+@ffi.Native<ffi.Void Function(ffi.Pointer<ggml_cgraph>)>(
+    symbol: 'ggml_graph_print')
+external void ggml_graph_print(
+  ffi.Pointer<ggml_cgraph> cgraph,
+);
+
+/// dump the graph into a file using the dot format
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<ggml_cgraph>, ffi.Pointer<ggml_cgraph>,
+        ffi.Pointer<ffi.Char>)>(symbol: 'ggml_graph_dump_dot')
+external void ggml_graph_dump_dot(
+  ffi.Pointer<ggml_cgraph> gb,
+  ffi.Pointer<ggml_cgraph> gf,
+  ffi.Pointer<ffi.Char> filename,
+);
+
+@ffi.Native<ggml_opt_params Function(ffi.Int32)>(
+    symbol: 'ggml_opt_default_params')
+external ggml_opt_params ggml_opt_default_params(
+  int type,
+);
+
+/// optimize the function defined by the tensor f
+@ffi.Native<
+    ffi.Int32 Function(ffi.Pointer<ggml_context>, ggml_opt_params,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_opt')
+external int ggml_opt(
+  ffi.Pointer<ggml_context> ctx,
+  ggml_opt_params params,
+  ffi.Pointer<ggml_tensor> f,
+);
+
+/// initialize optimizer context
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<ggml_context>, ffi.Pointer<ggml_opt_context>,
+        ggml_opt_params, ffi.Int64)>(symbol: 'ggml_opt_init')
+external void ggml_opt_init(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_opt_context> opt,
+  ggml_opt_params params,
+  int nx,
+);
+
+/// continue optimizing the function defined by the tensor f
+@ffi.Native<
+    ffi.Int32 Function(ffi.Pointer<ggml_context>, ffi.Pointer<ggml_opt_context>,
+        ffi.Pointer<ggml_tensor>)>(symbol: 'ggml_opt_resume')
+external int ggml_opt_resume(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_opt_context> opt,
+  ffi.Pointer<ggml_tensor> f,
+);
+
+/// continue optimizing the function defined by the tensor f
+@ffi.Native<
+    ffi.Int32 Function(
+        ffi.Pointer<ggml_context>,
+        ffi.Pointer<ggml_opt_context>,
+        ffi.Pointer<ggml_tensor>,
+        ffi.Pointer<ggml_cgraph>,
+        ffi.Pointer<ggml_cgraph>,
+        ggml_opt_callback,
+        ffi.Pointer<ffi.Void>)>(symbol: 'ggml_opt_resume_g')
+external int ggml_opt_resume_g(
+  ffi.Pointer<ggml_context> ctx,
+  ffi.Pointer<ggml_opt_context> opt,
+  ffi.Pointer<ggml_tensor> f,
+  ffi.Pointer<ggml_cgraph> gf,
+  ffi.Pointer<ggml_cgraph> gb,
+  ggml_opt_callback callback,
+  ffi.Pointer<ffi.Void> callback_data,
+);
+
+/// quantization
+@ffi.Native<
+    ffi.Size Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Void>, ffi.Int,
+        ffi.Int, ffi.Pointer<ffi.Int64>)>(symbol: 'ggml_quantize_q4_0')
+external int ggml_quantize_q4_0(
+  ffi.Pointer<ffi.Float> src,
+  ffi.Pointer<ffi.Void> dst,
+  int n,
+  int k,
+  ffi.Pointer<ffi.Int64> hist,
+);
+
+@ffi.Native<
+    ffi.Size Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Void>, ffi.Int,
+        ffi.Int, ffi.Pointer<ffi.Int64>)>(symbol: 'ggml_quantize_q4_1')
+external int ggml_quantize_q4_1(
+  ffi.Pointer<ffi.Float> src,
+  ffi.Pointer<ffi.Void> dst,
+  int n,
+  int k,
+  ffi.Pointer<ffi.Int64> hist,
+);
+
+@ffi.Native<
+    ffi.Size Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Void>, ffi.Int,
+        ffi.Int, ffi.Pointer<ffi.Int64>)>(symbol: 'ggml_quantize_q5_0')
+external int ggml_quantize_q5_0(
+  ffi.Pointer<ffi.Float> src,
+  ffi.Pointer<ffi.Void> dst,
+  int n,
+  int k,
+  ffi.Pointer<ffi.Int64> hist,
+);
+
+@ffi.Native<
+    ffi.Size Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Void>, ffi.Int,
+        ffi.Int, ffi.Pointer<ffi.Int64>)>(symbol: 'ggml_quantize_q5_1')
+external int ggml_quantize_q5_1(
+  ffi.Pointer<ffi.Float> src,
+  ffi.Pointer<ffi.Void> dst,
+  int n,
+  int k,
+  ffi.Pointer<ffi.Int64> hist,
+);
+
+@ffi.Native<
+    ffi.Size Function(ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Void>, ffi.Int,
+        ffi.Int, ffi.Pointer<ffi.Int64>)>(symbol: 'ggml_quantize_q8_0')
+external int ggml_quantize_q8_0(
+  ffi.Pointer<ffi.Float> src,
+  ffi.Pointer<ffi.Void> dst,
+  int n,
+  int k,
+  ffi.Pointer<ffi.Int64> hist,
+);
+
+@ffi.Native<
+    ffi.Size Function(
+        ffi.Int32,
+        ffi.Pointer<ffi.Float>,
+        ffi.Pointer<ffi.Void>,
+        ffi.Int,
+        ffi.Int,
+        ffi.Pointer<ffi.Int64>)>(symbol: 'ggml_quantize_chunk')
+external int ggml_quantize_chunk(
+  int type,
+  ffi.Pointer<ffi.Float> src,
+  ffi.Pointer<ffi.Void> dst,
+  int start,
+  int n,
+  ffi.Pointer<ffi.Int64> hist,
+);
+
+@ffi.Native<ffi.Pointer<gguf_context> Function()>(symbol: 'gguf_init_empty')
+external ffi.Pointer<gguf_context> gguf_init_empty();
+
+@ffi.Native<
+    ffi.Pointer<gguf_context> Function(
+        ffi.Pointer<ffi.Char>, gguf_init_params)>(symbol: 'gguf_init_from_file')
+external ffi.Pointer<gguf_context> gguf_init_from_file(
+  ffi.Pointer<ffi.Char> fname,
+  gguf_init_params params,
+);
+
+/// GGML_API struct gguf_context * gguf_init_from_buffer(..);
+@ffi.Native<ffi.Void Function(ffi.Pointer<gguf_context>)>(symbol: 'gguf_free')
+external void gguf_free(
+  ffi.Pointer<gguf_context> ctx,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Int32)>(symbol: 'gguf_type_name')
+external ffi.Pointer<ffi.Char> gguf_type_name(
+  int type,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<gguf_context>)>(
+    symbol: 'gguf_get_version')
+external int gguf_get_version(
+  ffi.Pointer<gguf_context> ctx,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Pointer<gguf_context>)>(
+    symbol: 'gguf_get_alignment')
+external int gguf_get_alignment(
+  ffi.Pointer<gguf_context> ctx,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Pointer<gguf_context>)>(
+    symbol: 'gguf_get_data_offset')
+external int gguf_get_data_offset(
+  ffi.Pointer<gguf_context> ctx,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Void> Function(ffi.Pointer<gguf_context>)>(
+    symbol: 'gguf_get_data')
+external ffi.Pointer<ffi.Void> gguf_get_data(
+  ffi.Pointer<gguf_context> ctx,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<gguf_context>)>(
+    symbol: 'gguf_get_n_kv')
+external int gguf_get_n_kv(
+  ffi.Pointer<gguf_context> ctx,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>)>(
+    symbol: 'gguf_find_key')
+external int gguf_find_key(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_key')
+external ffi.Pointer<ffi.Char> gguf_get_key(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Int32 Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_kv_type')
+external int gguf_get_kv_type(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Int32 Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_arr_type')
+external int gguf_get_arr_type(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+/// results are undefined if the wrong type is used for the key
+@ffi.Native<ffi.Uint8 Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_u8')
+external int gguf_get_val_u8(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Int8 Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_i8')
+external int gguf_get_val_i8(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Uint16 Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_u16')
+external int gguf_get_val_u16(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Int16 Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_i16')
+external int gguf_get_val_i16(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Uint32 Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_u32')
+external int gguf_get_val_u32(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Int32 Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_i32')
+external int gguf_get_val_i32(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Float Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_f32')
+external double gguf_get_val_f32(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Uint64 Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_u64')
+external int gguf_get_val_u64(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Int64 Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_i64')
+external int gguf_get_val_i64(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Double Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_f64')
+external double gguf_get_val_f64(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Bool Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_bool')
+external bool gguf_get_val_bool(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_val_str')
+external ffi.Pointer<ffi.Char> gguf_get_val_str(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_arr_n')
+external int gguf_get_arr_n(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Void> Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_arr_data')
+external ffi.Pointer<ffi.Void> gguf_get_arr_data(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<
+    ffi.Pointer<ffi.Char> Function(ffi.Pointer<gguf_context>, ffi.Int,
+        ffi.Int)>(symbol: 'gguf_get_arr_str')
+external ffi.Pointer<ffi.Char> gguf_get_arr_str(
+  ffi.Pointer<gguf_context> ctx,
+  int key_id,
+  int i,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<gguf_context>)>(
+    symbol: 'gguf_get_n_tensors')
+external int gguf_get_n_tensors(
+  ffi.Pointer<gguf_context> ctx,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>)>(
+    symbol: 'gguf_find_tensor')
+external int gguf_find_tensor(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> name,
+);
+
+@ffi.Native<ffi.Size Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_tensor_offset')
+external int gguf_get_tensor_offset(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Pointer<gguf_context>, ffi.Int)>(
+    symbol: 'gguf_get_tensor_name')
+external ffi.Pointer<ffi.Char> gguf_get_tensor_name(
+  ffi.Pointer<gguf_context> ctx,
+  int i,
+);
+
+/// overrides existing values or adds a new one
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Uint8)>(symbol: 'gguf_set_val_u8')
+external void gguf_set_val_u8(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  int val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Int8)>(symbol: 'gguf_set_val_i8')
+external void gguf_set_val_i8(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  int val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Uint16)>(symbol: 'gguf_set_val_u16')
+external void gguf_set_val_u16(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  int val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Int16)>(symbol: 'gguf_set_val_i16')
+external void gguf_set_val_i16(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  int val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Uint32)>(symbol: 'gguf_set_val_u32')
+external void gguf_set_val_u32(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  int val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Int32)>(symbol: 'gguf_set_val_i32')
+external void gguf_set_val_i32(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  int val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Float)>(symbol: 'gguf_set_val_f32')
+external void gguf_set_val_f32(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  double val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Uint64)>(symbol: 'gguf_set_val_u64')
+external void gguf_set_val_u64(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  int val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Int64)>(symbol: 'gguf_set_val_i64')
+external void gguf_set_val_i64(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  int val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Double)>(symbol: 'gguf_set_val_f64')
+external void gguf_set_val_f64(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  double val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Bool)>(symbol: 'gguf_set_val_bool')
+external void gguf_set_val_bool(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  bool val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Char>)>(symbol: 'gguf_set_val_str')
+external void gguf_set_val_str(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  ffi.Pointer<ffi.Char> val,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Int32, ffi.Pointer<ffi.Void>, ffi.Int)>(symbol: 'gguf_set_arr_data')
+external void gguf_set_arr_data(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  int type,
+  ffi.Pointer<ffi.Void> data,
+  int n,
+);
+
+@ffi.Native<
+    ffi.Void Function(
+        ffi.Pointer<gguf_context>,
+        ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Int)>(symbol: 'gguf_set_arr_str')
+external void gguf_set_arr_str(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> key,
+  ffi.Pointer<ffi.Pointer<ffi.Char>> data,
+  int n,
+);
+
+/// set or add KV pairs from another context
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>,
+        ffi.Pointer<gguf_context>)>(symbol: 'gguf_set_kv')
+external void gguf_set_kv(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<gguf_context> src,
+);
+
+/// manage tensor info
+@ffi.Native<
+        ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ggml_tensor>)>(
+    symbol: 'gguf_add_tensor')
+external void gguf_add_tensor(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ggml_tensor> tensor,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Int32)>(symbol: 'gguf_set_tensor_type')
+external void gguf_set_tensor_type(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> name,
+  int type,
+);
+
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Pointer<ffi.Void>, ffi.Size)>(symbol: 'gguf_set_tensor_data')
+external void gguf_set_tensor_data(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> name,
+  ffi.Pointer<ffi.Void> data,
+  int size,
+);
+
+/// write the entire context to a binary file
+@ffi.Native<
+    ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+        ffi.Bool)>(symbol: 'gguf_write_to_file')
+external void gguf_write_to_file(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Char> fname,
+  bool only_meta,
+);
+
+/// get the size in bytes of the meta data (header, kv pairs, tensor info) including padding
+@ffi.Native<ffi.Size Function(ffi.Pointer<gguf_context>)>(
+    symbol: 'gguf_get_meta_size')
+external int gguf_get_meta_size(
+  ffi.Pointer<gguf_context> ctx,
+);
+
+@ffi.Native<
+        ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Void>)>(
+    symbol: 'gguf_get_meta_data')
+external void gguf_get_meta_data(
+  ffi.Pointer<gguf_context> ctx,
+  ffi.Pointer<ffi.Void> data,
+);
+
+/// system info
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_avx')
+external int ggml_cpu_has_avx();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_avx2')
+external int ggml_cpu_has_avx2();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_avx512')
+external int ggml_cpu_has_avx512();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_avx512_vbmi')
+external int ggml_cpu_has_avx512_vbmi();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_avx512_vnni')
+external int ggml_cpu_has_avx512_vnni();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_fma')
+external int ggml_cpu_has_fma();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_neon')
+external int ggml_cpu_has_neon();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_arm_fma')
+external int ggml_cpu_has_arm_fma();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_metal')
+external int ggml_cpu_has_metal();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_f16c')
+external int ggml_cpu_has_f16c();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_fp16_va')
+external int ggml_cpu_has_fp16_va();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_wasm_simd')
+external int ggml_cpu_has_wasm_simd();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_blas')
+external int ggml_cpu_has_blas();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_cublas')
+external int ggml_cpu_has_cublas();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_clblast')
+external int ggml_cpu_has_clblast();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_gpublas')
+external int ggml_cpu_has_gpublas();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_sse3')
+external int ggml_cpu_has_sse3();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_ssse3')
+external int ggml_cpu_has_ssse3();
+
+@ffi.Native<ffi.Int Function()>(symbol: 'ggml_cpu_has_vsx')
+external int ggml_cpu_has_vsx();
+
+@ffi.Native<ggml_type_traits_t Function(ffi.Int32)>(
+    symbol: 'ggml_internal_get_type_traits')
+external ggml_type_traits_t ggml_internal_get_type_traits(
+  int type,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Int, ffi.Pointer<ffi.Char>, ffi.Int,
+        ffi.Pointer<ffi.Char>)>(symbol: 'renameat')
+external int renameat(
+  int arg0,
+  ffi.Pointer<ffi.Char> arg1,
+  int arg2,
+  ffi.Pointer<ffi.Char> arg3,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+        ffi.UnsignedInt)>(symbol: 'renamex_np')
+external int renamex_np(
+  ffi.Pointer<ffi.Char> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+  int arg2,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Int, ffi.Pointer<ffi.Char>, ffi.Int,
+        ffi.Pointer<ffi.Char>, ffi.UnsignedInt)>(symbol: 'renameatx_np')
+external int renameatx_np(
+  int arg0,
+  ffi.Pointer<ffi.Char> arg1,
+  int arg2,
+  ffi.Pointer<ffi.Char> arg3,
+  int arg4,
+);
+
+/// ANSI-C
+@ffi.Native<ffi.Void Function(ffi.Pointer<FILE>)>(symbol: 'clearerr')
+external void clearerr(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'fclose')
+external int fclose(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'feof')
+external int feof(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'ferror')
+external int ferror(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'fflush')
+external int fflush(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'fgetc')
+external int fgetc(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>, ffi.Pointer<fpos_t>)>(
+    symbol: 'fgetpos')
+external int fgetpos(
+  ffi.Pointer<FILE> arg0,
+  ffi.Pointer<fpos_t> arg1,
+);
+
+@ffi.Native<
+    ffi.Pointer<ffi.Char> Function(
+        ffi.Pointer<ffi.Char>, ffi.Int, ffi.Pointer<FILE>)>(symbol: 'fgets')
+external ffi.Pointer<ffi.Char> fgets(
+  ffi.Pointer<ffi.Char> arg0,
+  int arg1,
+  ffi.Pointer<FILE> arg2,
+);
+
+@ffi.Native<
+    ffi.Pointer<FILE> Function(
+        ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>(symbol: 'fopen')
+external ffi.Pointer<FILE> fopen(
+  ffi.Pointer<ffi.Char> __filename,
+  ffi.Pointer<ffi.Char> __mode,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>)>(
+    symbol: 'fprintf')
+external int fprintf(
+  ffi.Pointer<FILE> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Int, ffi.Pointer<FILE>)>(symbol: 'fputc')
+external int fputc(
+  int arg0,
+  ffi.Pointer<FILE> arg1,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<FILE>)>(
+    symbol: 'fputs')
+external int fputs(
+  ffi.Pointer<ffi.Char> arg0,
+  ffi.Pointer<FILE> arg1,
+);
+
+@ffi.Native<
+    ffi.UnsignedLong Function(ffi.Pointer<ffi.Void>, ffi.Size, ffi.Size,
+        ffi.Pointer<FILE>)>(symbol: 'fread')
+external int fread(
+  ffi.Pointer<ffi.Void> __ptr,
+  int __size,
+  int __nitems,
+  ffi.Pointer<FILE> __stream,
+);
+
+@ffi.Native<
+    ffi.Pointer<FILE> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+        ffi.Pointer<FILE>)>(symbol: 'freopen')
+external ffi.Pointer<FILE> freopen(
+  ffi.Pointer<ffi.Char> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+  ffi.Pointer<FILE> arg2,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>)>(
+    symbol: 'fscanf')
+external int fscanf(
+  ffi.Pointer<FILE> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>, ffi.Long, ffi.Int)>(
+    symbol: 'fseek')
+external int fseek(
+  ffi.Pointer<FILE> arg0,
+  int arg1,
+  int arg2,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>, ffi.Pointer<fpos_t>)>(
+    symbol: 'fsetpos')
+external int fsetpos(
+  ffi.Pointer<FILE> arg0,
+  ffi.Pointer<fpos_t> arg1,
+);
+
+@ffi.Native<ffi.Long Function(ffi.Pointer<FILE>)>(symbol: 'ftell')
+external int ftell(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<
+    ffi.UnsignedLong Function(ffi.Pointer<ffi.Void>, ffi.Size, ffi.Size,
+        ffi.Pointer<FILE>)>(symbol: 'fwrite')
+external int fwrite(
+  ffi.Pointer<ffi.Void> __ptr,
+  int __size,
+  int __nitems,
+  ffi.Pointer<FILE> __stream,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'getc')
+external int getc(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function()>(symbol: 'getchar')
+external int getchar();
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>(
+    symbol: 'gets')
+external ffi.Pointer<ffi.Char> gets(
+  ffi.Pointer<ffi.Char> arg0,
+);
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<ffi.Char>)>(symbol: 'perror')
+external void perror(
+  ffi.Pointer<ffi.Char> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<ffi.Char>)>(symbol: 'printf')
+external int printf(
+  ffi.Pointer<ffi.Char> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Int, ffi.Pointer<FILE>)>(symbol: 'putc')
+external int putc(
+  int arg0,
+  ffi.Pointer<FILE> arg1,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Int)>(symbol: 'putchar')
+external int putchar(
+  int arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<ffi.Char>)>(symbol: 'puts')
+external int puts(
+  ffi.Pointer<ffi.Char> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<ffi.Char>)>(symbol: 'remove')
+external int remove(
+  ffi.Pointer<ffi.Char> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>(
+    symbol: 'rename')
+external int rename(
+  ffi.Pointer<ffi.Char> __old,
+  ffi.Pointer<ffi.Char> __new,
+);
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<FILE>)>(symbol: 'rewind')
+external void rewind(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<ffi.Char>)>(symbol: 'scanf')
+external int scanf(
+  ffi.Pointer<ffi.Char> arg0,
+);
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>)>(
+    symbol: 'setbuf')
+external void setbuf(
+  ffi.Pointer<FILE> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>, ffi.Int,
+        ffi.Size)>(symbol: 'setvbuf')
+external int setvbuf(
+  ffi.Pointer<FILE> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+  int arg2,
+  int arg3,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>(
+    symbol: 'sprintf')
+external int sprintf(
+  ffi.Pointer<ffi.Char> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>(
+    symbol: 'sscanf')
+external int sscanf(
+  ffi.Pointer<ffi.Char> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+);
+
+@ffi.Native<ffi.Pointer<FILE> Function()>(symbol: 'tmpfile')
+external ffi.Pointer<FILE> tmpfile();
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>(
+    symbol: 'tmpnam')
+external ffi.Pointer<ffi.Char> tmpnam(
+  ffi.Pointer<ffi.Char> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Int, ffi.Pointer<FILE>)>(symbol: 'ungetc')
+external int ungetc(
+  int arg0,
+  ffi.Pointer<FILE> arg1,
+);
+
+@ffi.Native<
+    ffi.Int Function(
+        ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>, va_list)>(symbol: 'vfprintf')
+external int vfprintf(
+  ffi.Pointer<FILE> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+  va_list arg2,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<ffi.Char>, va_list)>(symbol: 'vprintf')
+external int vprintf(
+  ffi.Pointer<ffi.Char> arg0,
+  va_list arg1,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+        va_list)>(symbol: 'vsprintf')
+external int vsprintf(
+  ffi.Pointer<ffi.Char> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+  va_list arg2,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>(
+    symbol: 'ctermid')
+external ffi.Pointer<ffi.Char> ctermid(
+  ffi.Pointer<ffi.Char> arg0,
+);
+
+@ffi.Native<ffi.Pointer<FILE> Function(ffi.Int, ffi.Pointer<ffi.Char>)>(
+    symbol: 'fdopen')
+external ffi.Pointer<FILE> fdopen(
+  int arg0,
+  ffi.Pointer<ffi.Char> arg1,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'fileno')
+external int fileno(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'pclose')
+external int pclose(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<
+    ffi.Pointer<FILE> Function(
+        ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>(symbol: 'popen')
+external ffi.Pointer<FILE> popen(
+  ffi.Pointer<ffi.Char> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+);
+
+/// Functions internal to the implementation.
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: '__srget')
+external int __srget(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<
+        ffi.Int Function(ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>, va_list)>(
+    symbol: '__svfscanf')
+external int __svfscanf(
+  ffi.Pointer<FILE> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+  va_list arg2,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Int, ffi.Pointer<FILE>)>(symbol: '__swbuf')
+external int __swbuf(
+  int arg0,
+  ffi.Pointer<FILE> arg1,
+);
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<FILE>)>(symbol: 'flockfile')
+external void flockfile(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'ftrylockfile')
+external int ftrylockfile(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Void Function(ffi.Pointer<FILE>)>(symbol: 'funlockfile')
+external void funlockfile(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'getc_unlocked')
+external int getc_unlocked(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function()>(symbol: 'getchar_unlocked')
+external int getchar_unlocked();
+
+@ffi.Native<ffi.Int Function(ffi.Int, ffi.Pointer<FILE>)>(
+    symbol: 'putc_unlocked')
+external int putc_unlocked(
+  int arg0,
+  ffi.Pointer<FILE> arg1,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Int)>(symbol: 'putchar_unlocked')
+external int putchar_unlocked(
+  int arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'getw')
+external int getw(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Int, ffi.Pointer<FILE>)>(symbol: 'putw')
+external int putw(
+  int arg0,
+  ffi.Pointer<FILE> arg1,
+);
+
+@ffi.Native<
+    ffi.Pointer<ffi.Char> Function(
+        ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>(symbol: 'tempnam')
+external ffi.Pointer<ffi.Char> tempnam(
+  ffi.Pointer<ffi.Char> __dir,
+  ffi.Pointer<ffi.Char> __prefix,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>, off_t, ffi.Int)>(
+    symbol: 'fseeko')
+external int fseeko(
+  ffi.Pointer<FILE> __stream,
+  int __offset,
+  int __whence,
+);
+
+@ffi.Native<off_t Function(ffi.Pointer<FILE>)>(symbol: 'ftello')
+external int ftello(
+  ffi.Pointer<FILE> __stream,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Size,
+        ffi.Pointer<ffi.Char>)>(symbol: 'snprintf')
+external int snprintf(
+  ffi.Pointer<ffi.Char> __str,
+  int __size,
+  ffi.Pointer<ffi.Char> __format,
+);
+
+@ffi.Native<
+    ffi.Int Function(
+        ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>, va_list)>(symbol: 'vfscanf')
+external int vfscanf(
+  ffi.Pointer<FILE> __stream,
+  ffi.Pointer<ffi.Char> __format,
+  va_list arg2,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<ffi.Char>, va_list)>(symbol: 'vscanf')
+external int vscanf(
+  ffi.Pointer<ffi.Char> __format,
+  va_list arg1,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Size, ffi.Pointer<ffi.Char>,
+        va_list)>(symbol: 'vsnprintf')
+external int vsnprintf(
+  ffi.Pointer<ffi.Char> __str,
+  int __size,
+  ffi.Pointer<ffi.Char> __format,
+  va_list arg3,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+        va_list)>(symbol: 'vsscanf')
+external int vsscanf(
+  ffi.Pointer<ffi.Char> __str,
+  ffi.Pointer<ffi.Char> __format,
+  va_list arg2,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Int, ffi.Pointer<ffi.Char>)>(symbol: 'dprintf')
+external int dprintf(
+  int arg0,
+  ffi.Pointer<ffi.Char> arg1,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Int, ffi.Pointer<ffi.Char>, va_list)>(
+    symbol: 'vdprintf')
+external int vdprintf(
+  int arg0,
+  ffi.Pointer<ffi.Char> arg1,
+  va_list arg2,
+);
+
+@ffi.Native<
+    ssize_t Function(ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Pointer<ffi.Size>,
+        ffi.Int, ffi.Pointer<FILE>)>(symbol: 'getdelim')
+external int getdelim(
+  ffi.Pointer<ffi.Pointer<ffi.Char>> __linep,
+  ffi.Pointer<ffi.Size> __linecapp,
+  int __delimiter,
+  ffi.Pointer<FILE> __stream,
+);
+
+@ffi.Native<
+    ssize_t Function(ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Pointer<ffi.Size>,
+        ffi.Pointer<FILE>)>(symbol: 'getline')
+external int getline(
+  ffi.Pointer<ffi.Pointer<ffi.Char>> __linep,
+  ffi.Pointer<ffi.Size> __linecapp,
+  ffi.Pointer<FILE> __stream,
+);
+
+@ffi.Native<
+    ffi.Pointer<FILE> Function(ffi.Pointer<ffi.Void>, ffi.Size,
+        ffi.Pointer<ffi.Char>)>(symbol: 'fmemopen')
+external ffi.Pointer<FILE> fmemopen(
+  ffi.Pointer<ffi.Void> __buf,
+  int __size,
+  ffi.Pointer<ffi.Char> __mode,
+);
+
+@ffi.Native<
+    ffi.Pointer<FILE> Function(ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Pointer<ffi.Size>)>(symbol: 'open_memstream')
+external ffi.Pointer<FILE> open_memstream(
+  ffi.Pointer<ffi.Pointer<ffi.Char>> __bufp,
+  ffi.Pointer<ffi.Size> __sizep,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<ffi.Pointer<ffi.Char>>,
+        ffi.Pointer<ffi.Char>)>(symbol: 'asprintf')
+external int asprintf(
+  ffi.Pointer<ffi.Pointer<ffi.Char>> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+);
+
+@ffi.Native<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>(
+    symbol: 'ctermid_r')
+external ffi.Pointer<ffi.Char> ctermid_r(
+  ffi.Pointer<ffi.Char> arg0,
+);
+
+@ffi.Native<
+    ffi.Pointer<ffi.Char> Function(
+        ffi.Pointer<FILE>, ffi.Pointer<ffi.Size>)>(symbol: 'fgetln')
+external ffi.Pointer<ffi.Char> fgetln(
+  ffi.Pointer<FILE> arg0,
+  ffi.Pointer<ffi.Size> arg1,
+);
+
+@ffi.Native<
+    ffi.Pointer<ffi.Char> Function(
+        ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>(symbol: 'fmtcheck')
+external ffi.Pointer<ffi.Char> fmtcheck(
+  ffi.Pointer<ffi.Char> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'fpurge')
+external int fpurge(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<
+    ffi.Void Function(
+        ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>, ffi.Int)>(symbol: 'setbuffer')
+external void setbuffer(
+  ffi.Pointer<FILE> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+  int arg2,
+);
+
+@ffi.Native<ffi.Int Function(ffi.Pointer<FILE>)>(symbol: 'setlinebuf')
+external int setlinebuf(
+  ffi.Pointer<FILE> arg0,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Pointer<ffi.Char>,
+        va_list)>(symbol: 'vasprintf')
+external int vasprintf(
+  ffi.Pointer<ffi.Pointer<ffi.Char>> arg0,
+  ffi.Pointer<ffi.Char> arg1,
+  va_list arg2,
+);
+
+/// Stdio function-access interface.
+@ffi.Native<
+    ffi.Pointer<FILE> Function(
+        ffi.Pointer<ffi.Void>,
+        ffi.Pointer<
+            ffi.NativeFunction<
+                ffi.Int Function(
+                    ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Int)>>,
+        ffi.Pointer<
+            ffi.NativeFunction<
+                ffi.Int Function(
+                    ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Int)>>,
+        ffi.Pointer<
+            ffi.NativeFunction<
+                fpos_t Function(ffi.Pointer<ffi.Void>, fpos_t, ffi.Int)>>,
+        ffi.Pointer<
+            ffi.NativeFunction<
+                ffi.Int Function(ffi.Pointer<ffi.Void>)>>)>(symbol: 'funopen')
+external ffi.Pointer<FILE> funopen(
+  ffi.Pointer<ffi.Void> arg0,
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int Function(
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Int)>>
+      arg1,
+  ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Int Function(
+                  ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Int)>>
+      arg2,
+  ffi.Pointer<
+          ffi.NativeFunction<
+              fpos_t Function(ffi.Pointer<ffi.Void>, fpos_t, ffi.Int)>>
+      arg3,
+  ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>> arg4,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Int, ffi.Size,
+        ffi.Pointer<ffi.Char>)>(symbol: '__sprintf_chk')
+external int __sprintf_chk(
+  ffi.Pointer<ffi.Char> arg0,
+  int arg1,
+  int arg2,
+  ffi.Pointer<ffi.Char> arg3,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Size, ffi.Int, ffi.Size,
+        ffi.Pointer<ffi.Char>)>(symbol: '__snprintf_chk')
+external int __snprintf_chk(
+  ffi.Pointer<ffi.Char> arg0,
+  int arg1,
+  int arg2,
+  int arg3,
+  ffi.Pointer<ffi.Char> arg4,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Int, ffi.Size,
+        ffi.Pointer<ffi.Char>, va_list)>(symbol: '__vsprintf_chk')
+external int __vsprintf_chk(
+  ffi.Pointer<ffi.Char> arg0,
+  int arg1,
+  int arg2,
+  ffi.Pointer<ffi.Char> arg3,
+  va_list arg4,
+);
+
+@ffi.Native<
+    ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Size, ffi.Int, ffi.Size,
+        ffi.Pointer<ffi.Char>, va_list)>(symbol: '__vsnprintf_chk')
+external int __vsnprintf_chk(
+  ffi.Pointer<ffi.Char> arg0,
+  int arg1,
+  int arg2,
+  int arg3,
+  ffi.Pointer<ffi.Char> arg4,
+  va_list arg5,
 );
 
 @ffi.Native<llama_context_params Function()>(
@@ -739,6 +4199,987 @@ external void llama_dump_timing_info_yaml(
   ffi.Pointer<llama_context> ctx,
 );
 
+/// mbstate_t is an opaque object to keep conversion state, during multibyte
+/// stream conversions.  The content must not be referenced by user programs.
+final class __mbstate_t extends ffi.Union {
+  @ffi.Array.multi([128])
+  external ffi.Array<ffi.Char> __mbstate8;
+
+  /// for alignment
+  @ffi.LongLong()
+  external int _mbstateL;
+}
+
+final class __darwin_pthread_handler_rec extends ffi.Struct {
+  /// Routine to call
+  external ffi
+      .Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>
+      __routine;
+
+  /// Argument to pass
+  external ffi.Pointer<ffi.Void> __arg;
+
+  external ffi.Pointer<__darwin_pthread_handler_rec> __next;
+}
+
+final class _opaque_pthread_attr_t extends ffi.Struct {
+  @ffi.Long()
+  external int __sig;
+
+  @ffi.Array.multi([56])
+  external ffi.Array<ffi.Char> __opaque;
+}
+
+final class _opaque_pthread_cond_t extends ffi.Struct {
+  @ffi.Long()
+  external int __sig;
+
+  @ffi.Array.multi([40])
+  external ffi.Array<ffi.Char> __opaque;
+}
+
+final class _opaque_pthread_condattr_t extends ffi.Struct {
+  @ffi.Long()
+  external int __sig;
+
+  @ffi.Array.multi([8])
+  external ffi.Array<ffi.Char> __opaque;
+}
+
+final class _opaque_pthread_mutex_t extends ffi.Struct {
+  @ffi.Long()
+  external int __sig;
+
+  @ffi.Array.multi([56])
+  external ffi.Array<ffi.Char> __opaque;
+}
+
+final class _opaque_pthread_mutexattr_t extends ffi.Struct {
+  @ffi.Long()
+  external int __sig;
+
+  @ffi.Array.multi([8])
+  external ffi.Array<ffi.Char> __opaque;
+}
+
+final class _opaque_pthread_once_t extends ffi.Struct {
+  @ffi.Long()
+  external int __sig;
+
+  @ffi.Array.multi([8])
+  external ffi.Array<ffi.Char> __opaque;
+}
+
+final class _opaque_pthread_rwlock_t extends ffi.Struct {
+  @ffi.Long()
+  external int __sig;
+
+  @ffi.Array.multi([192])
+  external ffi.Array<ffi.Char> __opaque;
+}
+
+final class _opaque_pthread_rwlockattr_t extends ffi.Struct {
+  @ffi.Long()
+  external int __sig;
+
+  @ffi.Array.multi([16])
+  external ffi.Array<ffi.Char> __opaque;
+}
+
+final class _opaque_pthread_t extends ffi.Struct {
+  @ffi.Long()
+  external int __sig;
+
+  external ffi.Pointer<__darwin_pthread_handler_rec> __cleanup_stack;
+
+  @ffi.Array.multi([8176])
+  external ffi.Array<ffi.Char> __opaque;
+}
+
+/// ggml object
+final class ggml_object extends ffi.Struct {
+  @ffi.Size()
+  external int offs;
+
+  @ffi.Size()
+  external int size;
+
+  external ffi.Pointer<ggml_object> next;
+
+  @ffi.Int32()
+  external int type;
+
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Char> padding;
+}
+
+abstract class ggml_object_type {
+  static const int GGML_OBJECT_TENSOR = 0;
+  static const int GGML_OBJECT_GRAPH = 1;
+  static const int GGML_OBJECT_WORK_BUFFER = 2;
+}
+
+final class ggml_context extends ffi.Opaque {}
+
+abstract class ggml_type {
+  static const int GGML_TYPE_F32 = 0;
+  static const int GGML_TYPE_F16 = 1;
+  static const int GGML_TYPE_Q4_0 = 2;
+  static const int GGML_TYPE_Q4_1 = 3;
+
+  /// GGML_TYPE_Q4_2 = 4, support has been removed
+  /// GGML_TYPE_Q4_3 (5) support has been removed
+  static const int GGML_TYPE_Q5_0 = 6;
+  static const int GGML_TYPE_Q5_1 = 7;
+  static const int GGML_TYPE_Q8_0 = 8;
+  static const int GGML_TYPE_Q8_1 = 9;
+
+  /// k-quantizations
+  static const int GGML_TYPE_Q2_K = 10;
+  static const int GGML_TYPE_Q3_K = 11;
+  static const int GGML_TYPE_Q4_K = 12;
+  static const int GGML_TYPE_Q5_K = 13;
+  static const int GGML_TYPE_Q6_K = 14;
+  static const int GGML_TYPE_Q8_K = 15;
+  static const int GGML_TYPE_I8 = 16;
+  static const int GGML_TYPE_I16 = 17;
+  static const int GGML_TYPE_I32 = 18;
+  static const int GGML_TYPE_COUNT = 19;
+}
+
+abstract class ggml_backend {
+  static const int GGML_BACKEND_CPU = 0;
+  static const int GGML_BACKEND_GPU = 10;
+  static const int GGML_BACKEND_GPU_SPLIT = 20;
+}
+
+/// model file types
+abstract class ggml_ftype {
+  static const int GGML_FTYPE_UNKNOWN = -1;
+  static const int GGML_FTYPE_ALL_F32 = 0;
+
+  /// except 1d tensors
+  static const int GGML_FTYPE_MOSTLY_F16 = 1;
+
+  /// except 1d tensors
+  static const int GGML_FTYPE_MOSTLY_Q4_0 = 2;
+
+  /// except 1d tensors
+  static const int GGML_FTYPE_MOSTLY_Q4_1 = 3;
+
+  /// tok_embeddings.weight and output.weight are F16
+  static const int GGML_FTYPE_MOSTLY_Q4_1_SOME_F16 = 4;
+
+  /// except 1d tensors
+  static const int GGML_FTYPE_MOSTLY_Q8_0 = 7;
+
+  /// except 1d tensors
+  static const int GGML_FTYPE_MOSTLY_Q5_0 = 8;
+
+  /// except 1d tensors
+  static const int GGML_FTYPE_MOSTLY_Q5_1 = 9;
+
+  /// except 1d tensors
+  static const int GGML_FTYPE_MOSTLY_Q2_K = 10;
+
+  /// except 1d tensors
+  static const int GGML_FTYPE_MOSTLY_Q3_K = 11;
+
+  /// except 1d tensors
+  static const int GGML_FTYPE_MOSTLY_Q4_K = 12;
+
+  /// except 1d tensors
+  static const int GGML_FTYPE_MOSTLY_Q5_K = 13;
+
+  /// except 1d tensors
+  static const int GGML_FTYPE_MOSTLY_Q6_K = 14;
+}
+
+/// available tensor operations:
+abstract class ggml_op {
+  static const int GGML_OP_NONE = 0;
+  static const int GGML_OP_DUP = 1;
+  static const int GGML_OP_ADD = 2;
+  static const int GGML_OP_ADD1 = 3;
+  static const int GGML_OP_ACC = 4;
+  static const int GGML_OP_SUB = 5;
+  static const int GGML_OP_MUL = 6;
+  static const int GGML_OP_DIV = 7;
+  static const int GGML_OP_SQR = 8;
+  static const int GGML_OP_SQRT = 9;
+  static const int GGML_OP_LOG = 10;
+  static const int GGML_OP_SUM = 11;
+  static const int GGML_OP_SUM_ROWS = 12;
+  static const int GGML_OP_MEAN = 13;
+  static const int GGML_OP_ARGMAX = 14;
+  static const int GGML_OP_REPEAT = 15;
+  static const int GGML_OP_REPEAT_BACK = 16;
+  static const int GGML_OP_CONCAT = 17;
+  static const int GGML_OP_SILU_BACK = 18;
+
+  /// normalize
+  static const int GGML_OP_NORM = 19;
+  static const int GGML_OP_RMS_NORM = 20;
+  static const int GGML_OP_RMS_NORM_BACK = 21;
+  static const int GGML_OP_GROUP_NORM = 22;
+  static const int GGML_OP_MUL_MAT = 23;
+  static const int GGML_OP_OUT_PROD = 24;
+  static const int GGML_OP_SCALE = 25;
+  static const int GGML_OP_SET = 26;
+  static const int GGML_OP_CPY = 27;
+  static const int GGML_OP_CONT = 28;
+  static const int GGML_OP_RESHAPE = 29;
+  static const int GGML_OP_VIEW = 30;
+  static const int GGML_OP_PERMUTE = 31;
+  static const int GGML_OP_TRANSPOSE = 32;
+  static const int GGML_OP_GET_ROWS = 33;
+  static const int GGML_OP_GET_ROWS_BACK = 34;
+  static const int GGML_OP_DIAG = 35;
+  static const int GGML_OP_DIAG_MASK_INF = 36;
+  static const int GGML_OP_DIAG_MASK_ZERO = 37;
+  static const int GGML_OP_SOFT_MAX = 38;
+  static const int GGML_OP_SOFT_MAX_BACK = 39;
+  static const int GGML_OP_ROPE = 40;
+  static const int GGML_OP_ROPE_BACK = 41;
+  static const int GGML_OP_ALIBI = 42;
+  static const int GGML_OP_CLAMP = 43;
+  static const int GGML_OP_CONV_1D = 44;
+  static const int GGML_OP_CONV_2D = 45;
+  static const int GGML_OP_CONV_TRANSPOSE_2D = 46;
+  static const int GGML_OP_POOL_1D = 47;
+  static const int GGML_OP_POOL_2D = 48;
+
+  /// nearest interpolate
+  static const int GGML_OP_UPSCALE = 49;
+  static const int GGML_OP_FLASH_ATTN = 50;
+  static const int GGML_OP_FLASH_FF = 51;
+  static const int GGML_OP_FLASH_ATTN_BACK = 52;
+  static const int GGML_OP_WIN_PART = 53;
+  static const int GGML_OP_WIN_UNPART = 54;
+  static const int GGML_OP_GET_REL_POS = 55;
+  static const int GGML_OP_ADD_REL_POS = 56;
+  static const int GGML_OP_UNARY = 57;
+  static const int GGML_OP_MAP_UNARY = 58;
+  static const int GGML_OP_MAP_BINARY = 59;
+  static const int GGML_OP_MAP_CUSTOM1_F32 = 60;
+  static const int GGML_OP_MAP_CUSTOM2_F32 = 61;
+  static const int GGML_OP_MAP_CUSTOM3_F32 = 62;
+  static const int GGML_OP_MAP_CUSTOM1 = 63;
+  static const int GGML_OP_MAP_CUSTOM2 = 64;
+  static const int GGML_OP_MAP_CUSTOM3 = 65;
+  static const int GGML_OP_CROSS_ENTROPY_LOSS = 66;
+  static const int GGML_OP_CROSS_ENTROPY_LOSS_BACK = 67;
+  static const int GGML_OP_COUNT = 68;
+}
+
+abstract class ggml_unary_op {
+  static const int GGML_UNARY_OP_ABS = 0;
+  static const int GGML_UNARY_OP_SGN = 1;
+  static const int GGML_UNARY_OP_NEG = 2;
+  static const int GGML_UNARY_OP_STEP = 3;
+  static const int GGML_UNARY_OP_TANH = 4;
+  static const int GGML_UNARY_OP_ELU = 5;
+  static const int GGML_UNARY_OP_RELU = 6;
+  static const int GGML_UNARY_OP_GELU = 7;
+  static const int GGML_UNARY_OP_GELU_QUICK = 8;
+  static const int GGML_UNARY_OP_SILU = 9;
+}
+
+abstract class ggml_log_level {
+  static const int GGML_LOG_LEVEL_ERROR = 2;
+  static const int GGML_LOG_LEVEL_WARN = 3;
+  static const int GGML_LOG_LEVEL_INFO = 4;
+}
+
+/// n-dimensional tensor
+final class ggml_tensor extends ffi.Struct {
+  @ffi.Int32()
+  external int type;
+
+  @ffi.Int32()
+  external int backend;
+
+  @ffi.Int()
+  external int n_dims;
+
+  /// number of elements
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Int64> ne;
+
+  /// stride in bytes:
+  /// nb[0] = sizeof(type)
+  /// nb[1] = nb[0]   * ne[0] + padding
+  /// nb[i] = nb[i-1] * ne[i-1]
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Size> nb;
+
+  /// compute data
+  @ffi.Int32()
+  external int op;
+
+  /// op params - allocated as int32_t for alignment
+  @ffi.Array.multi([8])
+  external ffi.Array<ffi.Int32> op_params;
+
+  @ffi.Bool()
+  external bool is_param;
+
+  external ffi.Pointer<ggml_tensor> grad;
+
+  @ffi.Array.multi([6])
+  external ffi.Array<ffi.Pointer<ggml_tensor>> src;
+
+  /// performance
+  @ffi.Int()
+  external int perf_runs;
+
+  @ffi.Int64()
+  external int perf_cycles;
+
+  @ffi.Int64()
+  external int perf_time_us;
+
+  external ffi.Pointer<ggml_tensor> view_src;
+
+  @ffi.Size()
+  external int view_offs;
+
+  external ffi.Pointer<ffi.Void> data;
+
+  @ffi.Array.multi([64])
+  external ffi.Array<ffi.Char> name;
+
+  /// extra things e.g. for ggml-cuda.cu
+  external ffi.Pointer<ffi.Void> extra;
+
+  @ffi.Array.multi([4])
+  external ffi.Array<ffi.Char> padding;
+}
+
+/// the compute plan that needs to be prepared for ggml_graph_compute()
+/// since https://github.com/ggerganov/ggml/issues/287
+final class ggml_cplan extends ffi.Struct {
+  /// size of work buffer, calculated by `ggml_graph_plan()`
+  @ffi.Size()
+  external int work_size;
+
+  /// work buffer, to be allocated by caller before calling to `ggml_graph_compute()`
+  external ffi.Pointer<ffi.Uint8> work_data;
+
+  @ffi.Int()
+  external int n_threads;
+
+  /// the `n_tasks` of nodes, 1:1 mapping to cgraph nodes
+  @ffi.Array.multi([4096])
+  external ffi.Array<ffi.Int> n_tasks;
+
+  /// abort ggml_graph_compute when true
+  external ffi.Pointer<
+          ffi.NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void> data)>>
+      abort_callback;
+
+  external ffi.Pointer<ffi.Void> abort_callback_data;
+}
+
+/// computation graph
+final class ggml_cgraph extends ffi.Struct {
+  @ffi.Int()
+  external int n_nodes;
+
+  @ffi.Int()
+  external int n_leafs;
+
+  @ffi.Array.multi([4096])
+  external ffi.Array<ffi.Pointer<ggml_tensor>> nodes;
+
+  @ffi.Array.multi([4096])
+  external ffi.Array<ffi.Pointer<ggml_tensor>> grads;
+
+  @ffi.Array.multi([4096])
+  external ffi.Array<ffi.Pointer<ggml_tensor>> leafs;
+
+  @ffi.Array.multi([8273])
+  external ffi.Array<ffi.Pointer<ffi.Void>> visited_hash_table;
+
+  /// performance
+  @ffi.Int()
+  external int perf_runs;
+
+  @ffi.Int64()
+  external int perf_cycles;
+
+  @ffi.Int64()
+  external int perf_time_us;
+}
+
+/// scratch buffer
+final class ggml_scratch extends ffi.Struct {
+  @ffi.Size()
+  external int offs;
+
+  @ffi.Size()
+  external int size;
+
+  external ffi.Pointer<ffi.Void> data;
+}
+
+final class ggml_init_params extends ffi.Struct {
+  /// bytes
+  @ffi.Size()
+  external int mem_size;
+
+  /// if NULL, memory will be allocated internally
+  external ffi.Pointer<ffi.Void> mem_buffer;
+
+  /// don't allocate memory for the tensor data
+  @ffi.Bool()
+  external bool no_alloc;
+}
+
+/// NOTE: the INIT or FINALIZE pass is not scheduled unless explicitly enabled.
+/// This behavior was changed since https://github.com/ggerganov/llama.cpp/pull/1995.
+abstract class ggml_task_type {
+  static const int GGML_TASK_INIT = 0;
+  static const int GGML_TASK_COMPUTE = 1;
+  static const int GGML_TASK_FINALIZE = 2;
+}
+
+final class ggml_compute_params extends ffi.Struct {
+  @ffi.Int32()
+  external int type;
+
+  /// ith = thread index, nth = number of threads
+  @ffi.Int()
+  external int ith;
+
+  @ffi.Int()
+  external int nth;
+
+  /// work buffer for all threads
+  @ffi.Size()
+  external int wsize;
+
+  external ffi.Pointer<ffi.Void> wdata;
+}
+
+abstract class ggml_op_pool {
+  static const int GGML_OP_POOL_MAX = 0;
+  static const int GGML_OP_POOL_AVG = 1;
+  static const int GGML_OP_POOL_COUNT = 2;
+}
+
+/// custom operators
+typedef ggml_unary_op_f32_t = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(
+            ffi.Int, ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>)>>;
+typedef ggml_binary_op_f32_t = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Float>,
+            ffi.Pointer<ffi.Float>, ffi.Pointer<ffi.Float>)>>;
+typedef ggml_custom1_op_f32_t = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(ffi.Pointer<ggml_tensor>, ffi.Pointer<ggml_tensor>)>>;
+typedef ggml_custom2_op_f32_t = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(ffi.Pointer<ggml_tensor>, ffi.Pointer<ggml_tensor>,
+            ffi.Pointer<ggml_tensor>)>>;
+typedef ggml_custom3_op_f32_t = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(ffi.Pointer<ggml_tensor>, ffi.Pointer<ggml_tensor>,
+            ffi.Pointer<ggml_tensor>, ffi.Pointer<ggml_tensor>)>>;
+
+/// custom operators v2
+typedef ggml_custom1_op_t = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(
+            ffi.Pointer<ggml_tensor> dst,
+            ffi.Pointer<ggml_tensor> a,
+            ffi.Int ith,
+            ffi.Int nth,
+            ffi.Pointer<ffi.Void> userdata)>>;
+typedef ggml_custom2_op_t = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(
+            ffi.Pointer<ggml_tensor> dst,
+            ffi.Pointer<ggml_tensor> a,
+            ffi.Pointer<ggml_tensor> b,
+            ffi.Int ith,
+            ffi.Int nth,
+            ffi.Pointer<ffi.Void> userdata)>>;
+typedef ggml_custom3_op_t = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(
+            ffi.Pointer<ggml_tensor> dst,
+            ffi.Pointer<ggml_tensor> a,
+            ffi.Pointer<ggml_tensor> b,
+            ffi.Pointer<ggml_tensor> c,
+            ffi.Int ith,
+            ffi.Int nth,
+            ffi.Pointer<ffi.Void> userdata)>>;
+
+/// optimization methods
+abstract class ggml_opt_type {
+  static const int GGML_OPT_ADAM = 0;
+  static const int GGML_OPT_LBFGS = 1;
+}
+
+/// linesearch methods
+abstract class ggml_linesearch {
+  static const int GGML_LINESEARCH_DEFAULT = 1;
+  static const int GGML_LINESEARCH_BACKTRACKING_ARMIJO = 0;
+  static const int GGML_LINESEARCH_BACKTRACKING_WOLFE = 1;
+  static const int GGML_LINESEARCH_BACKTRACKING_STRONG_WOLFE = 2;
+}
+
+/// optimization return values
+abstract class ggml_opt_result {
+  static const int GGML_OPT_OK = 0;
+  static const int GGML_OPT_DID_NOT_CONVERGE = 1;
+  static const int GGML_OPT_NO_CONTEXT = 2;
+  static const int GGML_OPT_INVALID_WOLFE = 3;
+  static const int GGML_OPT_FAIL = 4;
+  static const int GGML_LINESEARCH_FAIL = -128;
+  static const int GGML_LINESEARCH_MINIMUM_STEP = -127;
+  static const int GGML_LINESEARCH_MAXIMUM_STEP = -126;
+  static const int GGML_LINESEARCH_MAXIMUM_ITERATIONS = -125;
+  static const int GGML_LINESEARCH_INVALID_PARAMETERS = -124;
+}
+
+/// optimization parameters
+///
+/// see ggml.c (ggml_opt_default_params) for default values
+final class ggml_opt_params extends ffi.Struct {
+  @ffi.Int32()
+  external int type;
+
+  @ffi.Int()
+  external int n_threads;
+
+  /// delta-based convergence test
+  ///
+  /// if past == 0 - disabled
+  /// if past > 0:
+  /// stop if |f(x) - f(x_past)| < delta * max(1, |f(x)|)
+  @ffi.Int()
+  external int past;
+
+  @ffi.Float()
+  external double delta;
+
+  /// maximum number of iterations without improvement
+  ///
+  /// if 0 - disabled
+  /// if > 0:
+  /// assume convergence if no cost improvement in this number of iterations
+  @ffi.Int()
+  external int max_no_improvement;
+
+  @ffi.Bool()
+  external bool print_forward_graph;
+
+  @ffi.Bool()
+  external bool print_backward_graph;
+
+  external UnnamedStruct1 adam;
+
+  external UnnamedStruct2 lbfgs;
+}
+
+/// ADAM parameters
+final class UnnamedStruct1 extends ffi.Struct {
+  @ffi.Int()
+  external int n_iter;
+
+  /// schedule multiplier (fixed, decay or warmup)
+  @ffi.Float()
+  external double sched;
+
+  /// weight decay for AdamW, use 0.0f to disable
+  @ffi.Float()
+  external double decay;
+
+  /// minimum number of tensor dimension to apply weight decay
+  @ffi.Int()
+  external int decay_min_ndim;
+
+  /// learning rate
+  @ffi.Float()
+  external double alpha;
+
+  @ffi.Float()
+  external double beta1;
+
+  @ffi.Float()
+  external double beta2;
+
+  /// epsilon for numerical stability
+  @ffi.Float()
+  external double eps;
+
+  /// epsilon for convergence test
+  @ffi.Float()
+  external double eps_f;
+
+  /// epsilon for convergence test
+  @ffi.Float()
+  external double eps_g;
+
+  /// gradient clipping
+  @ffi.Float()
+  external double gclip;
+}
+
+/// LBFGS parameters
+final class UnnamedStruct2 extends ffi.Struct {
+  /// number of corrections to approximate the inv. Hessian
+  @ffi.Int()
+  external int m;
+
+  @ffi.Int()
+  external int n_iter;
+
+  @ffi.Int()
+  external int max_linesearch;
+
+  /// convergence tolerance
+  @ffi.Float()
+  external double eps;
+
+  /// line search tolerance
+  @ffi.Float()
+  external double ftol;
+
+  @ffi.Float()
+  external double wolfe;
+
+  @ffi.Float()
+  external double min_step;
+
+  @ffi.Float()
+  external double max_step;
+
+  @ffi.Int32()
+  external int linesearch;
+}
+
+final class ggml_opt_context extends ffi.Struct {
+  external ffi.Pointer<ggml_context> ctx;
+
+  external ggml_opt_params params;
+
+  @ffi.Int()
+  external int iter;
+
+  /// number of parameter elements
+  @ffi.Int64()
+  external int nx;
+
+  @ffi.Bool()
+  external bool just_initialized;
+
+  @ffi.Float()
+  external double loss_before;
+
+  @ffi.Float()
+  external double loss_after;
+
+  external UnnamedStruct3 adam;
+
+  external UnnamedStruct4 lbfgs;
+}
+
+final class UnnamedStruct3 extends ffi.Struct {
+  /// first moment
+  external ffi.Pointer<ggml_tensor> m;
+
+  /// second moment
+  external ffi.Pointer<ggml_tensor> v;
+
+  /// past function values
+  external ffi.Pointer<ggml_tensor> pf;
+
+  @ffi.Float()
+  external double fx_best;
+
+  @ffi.Float()
+  external double fx_prev;
+
+  @ffi.Int()
+  external int n_no_improvement;
+}
+
+final class UnnamedStruct4 extends ffi.Struct {
+  /// current parameters
+  external ffi.Pointer<ggml_tensor> x;
+
+  /// previous parameters
+  external ffi.Pointer<ggml_tensor> xp;
+
+  /// current gradient
+  external ffi.Pointer<ggml_tensor> g;
+
+  /// previous gradient
+  external ffi.Pointer<ggml_tensor> gp;
+
+  /// search direction
+  external ffi.Pointer<ggml_tensor> d;
+
+  /// past function values
+  external ffi.Pointer<ggml_tensor> pf;
+
+  /// the L-BFGS memory alpha
+  external ffi.Pointer<ggml_tensor> lmal;
+
+  /// the L-BFGS memory ys
+  external ffi.Pointer<ggml_tensor> lmys;
+
+  /// the L-BFGS memory s
+  external ffi.Pointer<ggml_tensor> lms;
+
+  /// the L-BFGS memory y
+  external ffi.Pointer<ggml_tensor> lmy;
+
+  @ffi.Float()
+  external double fx_best;
+
+  @ffi.Float()
+  external double step;
+
+  @ffi.Int()
+  external int j;
+
+  @ffi.Int()
+  external int k;
+
+  @ffi.Int()
+  external int end;
+
+  @ffi.Int()
+  external int n_no_improvement;
+}
+
+typedef ggml_opt_callback = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(
+            ffi.Pointer<ffi.Void> data, ffi.Pointer<ffi.Float> sched)>>;
+
+/// gguf
+abstract class gguf_type {
+  static const int GGUF_TYPE_UINT8 = 0;
+  static const int GGUF_TYPE_INT8 = 1;
+  static const int GGUF_TYPE_UINT16 = 2;
+  static const int GGUF_TYPE_INT16 = 3;
+  static const int GGUF_TYPE_UINT32 = 4;
+  static const int GGUF_TYPE_INT32 = 5;
+  static const int GGUF_TYPE_FLOAT32 = 6;
+  static const int GGUF_TYPE_BOOL = 7;
+  static const int GGUF_TYPE_STRING = 8;
+  static const int GGUF_TYPE_ARRAY = 9;
+  static const int GGUF_TYPE_UINT64 = 10;
+  static const int GGUF_TYPE_INT64 = 11;
+  static const int GGUF_TYPE_FLOAT64 = 12;
+
+  /// marks the end of the enum
+  static const int GGUF_TYPE_COUNT = 13;
+}
+
+final class gguf_context extends ffi.Opaque {}
+
+final class gguf_init_params extends ffi.Struct {
+  @ffi.Bool()
+  external bool no_alloc;
+
+  /// if not NULL, create a ggml_context and allocate the tensor data in it
+  external ffi.Pointer<ffi.Pointer<ggml_context>> ctx;
+}
+
+final class ggml_type_traits_t extends ffi.Struct {
+  external ffi.Pointer<ffi.Char> type_name;
+
+  @ffi.Int()
+  external int blck_size;
+
+  @ffi.Size()
+  external int type_size;
+
+  @ffi.Bool()
+  external bool is_quantized;
+
+  external ggml_to_float_t to_float;
+
+  external ggml_from_float_t from_float;
+
+  external ggml_from_float_t from_float_reference;
+
+  external ggml_vec_dot_t vec_dot;
+
+  @ffi.Int32()
+  external int vec_dot_type;
+}
+
+typedef ggml_to_float_t = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(
+            ffi.Pointer<ffi.Void> x, ffi.Pointer<ffi.Float> y, ffi.Int k)>>;
+typedef ggml_from_float_t = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(
+            ffi.Pointer<ffi.Float> x, ffi.Pointer<ffi.Void> y, ffi.Int k)>>;
+typedef ggml_vec_dot_t = ffi.Pointer<
+    ffi.NativeFunction<
+        ffi.Void Function(ffi.Int n, ffi.Pointer<ffi.Float> s,
+            ffi.Pointer<ffi.Void> x, ffi.Pointer<ffi.Void> y)>>;
+
+/// stdio buffers
+final class __sbuf extends ffi.Struct {
+  external ffi.Pointer<ffi.UnsignedChar> _base;
+
+  @ffi.Int()
+  external int _size;
+}
+
+/// hold a buncha junk that would grow the ABI
+final class __sFILEX extends ffi.Opaque {}
+
+/// stdio state variables.
+///
+/// The following always hold:
+///
+/// if (_flags&(__SLBF|__SWR)) == (__SLBF|__SWR),
+/// _lbfsize is -_bf._size, else _lbfsize is 0
+/// if _flags&__SRD, _w is 0
+/// if _flags&__SWR, _r is 0
+///
+/// This ensures that the getc and putc macros (or inline functions) never
+/// try to write or read from a file that is in `read' or `write' mode.
+/// (Moreover, they can, and do, automatically switch from read mode to
+/// write mode, and back, on "r+" and "w+" files.)
+///
+/// _lbfsize is used only to make the inline line-buffered output stream
+/// code as compact as possible.
+///
+/// _ub, _up, and _ur are used when ungetc() pushes back more characters
+/// than fit in the current _bf, or when ungetc() pushes back a character
+/// that does not match the previous one in _bf.  When this happens,
+/// _ub._base becomes non-nil (i.e., a stream has ungetc() data iff
+/// _ub._base!=NULL) and _up and _ur save the current values of _p and _r.
+///
+/// NB: see WARNING above before changing the layout of this structure!
+final class __sFILE extends ffi.Struct {
+  /// current position in (some) buffer
+  external ffi.Pointer<ffi.UnsignedChar> _p;
+
+  /// read space left for getc()
+  @ffi.Int()
+  external int _r;
+
+  /// write space left for putc()
+  @ffi.Int()
+  external int _w;
+
+  /// flags, below; this FILE is free if 0
+  @ffi.Short()
+  external int _flags;
+
+  /// fileno, if Unix descriptor, else -1
+  @ffi.Short()
+  external int _file;
+
+  /// the buffer (at least 1 byte, if !NULL)
+  external __sbuf _bf;
+
+  /// 0 or -_bf._size, for inline putc
+  @ffi.Int()
+  external int _lbfsize;
+
+  /// cookie passed to io functions
+  external ffi.Pointer<ffi.Void> _cookie;
+
+  external ffi
+      .Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>
+      _close;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Int)>> _read;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          fpos_t Function(ffi.Pointer<ffi.Void>, fpos_t, ffi.Int)>> _seek;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Int)>> _write;
+
+  /// ungetc buffer
+  external __sbuf _ub;
+
+  /// additions to FILE to not break ABI
+  external ffi.Pointer<__sFILEX> _extra;
+
+  /// saved _r when _r is counting ungetc data
+  @ffi.Int()
+  external int _ur;
+
+  /// guarantee an ungetc() buffer
+  @ffi.Array.multi([3])
+  external ffi.Array<ffi.UnsignedChar> _ubuf;
+
+  /// guarantee a getc() buffer
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.UnsignedChar> _nbuf;
+
+  /// buffer for fgetln()
+  external __sbuf _lb;
+
+  /// stat.st_blksize (may be != _bf._size)
+  @ffi.Int()
+  external int _blksize;
+
+  /// current lseek offset (see WARNING)
+  @fpos_t()
+  external int _offset;
+}
+
+typedef fpos_t = __darwin_off_t;
+typedef __darwin_off_t = __int64_t;
+typedef __int64_t = ffi.LongLong;
+
+/// stdio state variables.
+///
+/// The following always hold:
+///
+/// if (_flags&(__SLBF|__SWR)) == (__SLBF|__SWR),
+/// _lbfsize is -_bf._size, else _lbfsize is 0
+/// if _flags&__SRD, _w is 0
+/// if _flags&__SWR, _r is 0
+///
+/// This ensures that the getc and putc macros (or inline functions) never
+/// try to write or read from a file that is in `read' or `write' mode.
+/// (Moreover, they can, and do, automatically switch from read mode to
+/// write mode, and back, on "r+" and "w+" files.)
+///
+/// _lbfsize is used only to make the inline line-buffered output stream
+/// code as compact as possible.
+///
+/// _ub, _up, and _ur are used when ungetc() pushes back more characters
+/// than fit in the current _bf, or when ungetc() pushes back a character
+/// that does not match the previous one in _bf.  When this happens,
+/// _ub._base becomes non-nil (i.e., a stream has ungetc() data iff
+/// _ub._base!=NULL) and _up and _ur save the current values of _p and _r.
+///
+/// NB: see WARNING above before changing the layout of this structure!
+typedef FILE = __sFILE;
+typedef va_list = __darwin_va_list;
+typedef __darwin_va_list = __builtin_va_list;
+typedef __builtin_va_list = ffi.Pointer<ffi.Char>;
+typedef off_t = __darwin_off_t;
+typedef ssize_t = __darwin_ssize_t;
+typedef __darwin_ssize_t = ffi.Long;
+
 /// C interface
 ///
 /// TODO: show sample usage
@@ -1059,156 +5500,893 @@ typedef ggml_log_callback = ffi.Pointer<
         ffi.Void Function(ffi.Int32 level, ffi.Pointer<ffi.Char> text,
             ffi.Pointer<ffi.Void> user_data)>>;
 
-abstract class ggml_log_level {
-  static const int GGML_LOG_LEVEL_ERROR = 2;
-  static const int GGML_LOG_LEVEL_WARN = 3;
-  static const int GGML_LOG_LEVEL_INFO = 4;
-}
+const int __WORDSIZE = 64;
 
-/// stdio state variables.
-///
-/// The following always hold:
-///
-/// if (_flags&(__SLBF|__SWR)) == (__SLBF|__SWR),
-/// _lbfsize is -_bf._size, else _lbfsize is 0
-/// if _flags&__SRD, _w is 0
-/// if _flags&__SWR, _r is 0
-///
-/// This ensures that the getc and putc macros (or inline functions) never
-/// try to write or read from a file that is in `read' or `write' mode.
-/// (Moreover, they can, and do, automatically switch from read mode to
-/// write mode, and back, on "r+" and "w+" files.)
-///
-/// _lbfsize is used only to make the inline line-buffered output stream
-/// code as compact as possible.
-///
-/// _ub, _up, and _ur are used when ungetc() pushes back more characters
-/// than fit in the current _bf, or when ungetc() pushes back a character
-/// that does not match the previous one in _bf.  When this happens,
-/// _ub._base becomes non-nil (i.e., a stream has ungetc() data iff
-/// _ub._base!=NULL) and _up and _ur save the current values of _p and _r.
-///
-/// NB: see WARNING above before changing the layout of this structure!
-typedef FILE = __sFILE;
+const int __DARWIN_ONLY_64_BIT_INO_T = 1;
 
-/// stdio state variables.
-///
-/// The following always hold:
-///
-/// if (_flags&(__SLBF|__SWR)) == (__SLBF|__SWR),
-/// _lbfsize is -_bf._size, else _lbfsize is 0
-/// if _flags&__SRD, _w is 0
-/// if _flags&__SWR, _r is 0
-///
-/// This ensures that the getc and putc macros (or inline functions) never
-/// try to write or read from a file that is in `read' or `write' mode.
-/// (Moreover, they can, and do, automatically switch from read mode to
-/// write mode, and back, on "r+" and "w+" files.)
-///
-/// _lbfsize is used only to make the inline line-buffered output stream
-/// code as compact as possible.
-///
-/// _ub, _up, and _ur are used when ungetc() pushes back more characters
-/// than fit in the current _bf, or when ungetc() pushes back a character
-/// that does not match the previous one in _bf.  When this happens,
-/// _ub._base becomes non-nil (i.e., a stream has ungetc() data iff
-/// _ub._base!=NULL) and _up and _ur save the current values of _p and _r.
-///
-/// NB: see WARNING above before changing the layout of this structure!
-final class __sFILE extends ffi.Struct {
-  /// current position in (some) buffer
-  external ffi.Pointer<ffi.UnsignedChar> _p;
+const int __DARWIN_ONLY_UNIX_CONFORMANCE = 1;
 
-  /// read space left for getc()
-  @ffi.Int()
-  external int _r;
+const int __DARWIN_ONLY_VERS_1050 = 1;
 
-  /// write space left for putc()
-  @ffi.Int()
-  external int _w;
+const int __DARWIN_UNIX03 = 1;
 
-  /// flags, below; this FILE is free if 0
-  @ffi.Short()
-  external int _flags;
+const int __DARWIN_64_BIT_INO_T = 1;
 
-  /// fileno, if Unix descriptor, else -1
-  @ffi.Short()
-  external int _file;
+const int __DARWIN_VERS_1050 = 1;
 
-  /// the buffer (at least 1 byte, if !NULL)
-  external __sbuf _bf;
+const int __DARWIN_NON_CANCELABLE = 0;
 
-  /// 0 or -_bf._size, for inline putc
-  @ffi.Int()
-  external int _lbfsize;
+const String __DARWIN_SUF_EXTSN = '\$DARWIN_EXTSN';
 
-  /// cookie passed to io functions
-  external ffi.Pointer<ffi.Void> _cookie;
+const int __DARWIN_C_ANSI = 4096;
 
-  external ffi
-      .Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>
-      _close;
+const int __DARWIN_C_FULL = 900000;
 
-  external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Int)>> _read;
+const int __DARWIN_C_LEVEL = 900000;
 
-  external ffi.Pointer<
-      ffi.NativeFunction<
-          fpos_t Function(ffi.Pointer<ffi.Void>, fpos_t, ffi.Int)>> _seek;
+const int __STDC_WANT_LIB_EXT1__ = 1;
 
-  external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Void>, ffi.Pointer<ffi.Char>, ffi.Int)>> _write;
+const int __DARWIN_NO_LONG_LONG = 0;
 
-  /// ungetc buffer
-  external __sbuf _ub;
+const int _DARWIN_FEATURE_64_BIT_INODE = 1;
 
-  /// additions to FILE to not break ABI
-  external ffi.Pointer<__sFILEX> _extra;
+const int _DARWIN_FEATURE_ONLY_64_BIT_INODE = 1;
 
-  /// saved _r when _r is counting ungetc data
-  @ffi.Int()
-  external int _ur;
+const int _DARWIN_FEATURE_ONLY_VERS_1050 = 1;
 
-  /// guarantee an ungetc() buffer
-  @ffi.Array.multi([3])
-  external ffi.Array<ffi.UnsignedChar> _ubuf;
+const int _DARWIN_FEATURE_ONLY_UNIX_CONFORMANCE = 1;
 
-  /// guarantee a getc() buffer
-  @ffi.Array.multi([1])
-  external ffi.Array<ffi.UnsignedChar> _nbuf;
+const int _DARWIN_FEATURE_UNIX_CONFORMANCE = 3;
 
-  /// buffer for fgetln()
-  external __sbuf _lb;
+const int __has_ptrcheck = 0;
 
-  /// stat.st_blksize (may be != _bf._size)
-  @ffi.Int()
-  external int _blksize;
+const int __DARWIN_NULL = 0;
 
-  /// current lseek offset (see WARNING)
-  @fpos_t()
-  external int _offset;
-}
+const int __PTHREAD_SIZE__ = 8176;
 
-/// stdio buffers
-final class __sbuf extends ffi.Struct {
-  external ffi.Pointer<ffi.UnsignedChar> _base;
+const int __PTHREAD_ATTR_SIZE__ = 56;
 
-  @ffi.Int()
-  external int _size;
-}
+const int __PTHREAD_MUTEXATTR_SIZE__ = 8;
 
-typedef fpos_t = __darwin_off_t;
-typedef __darwin_off_t = __int64_t;
-typedef __int64_t = ffi.LongLong;
+const int __PTHREAD_MUTEX_SIZE__ = 56;
 
-/// hold a buncha junk that would grow the ABI
-final class __sFILEX extends ffi.Opaque {}
+const int __PTHREAD_CONDATTR_SIZE__ = 8;
+
+const int __PTHREAD_COND_SIZE__ = 40;
+
+const int __PTHREAD_ONCE_SIZE__ = 8;
+
+const int __PTHREAD_RWLOCK_SIZE__ = 192;
+
+const int __PTHREAD_RWLOCKATTR_SIZE__ = 16;
+
+const int USER_ADDR_NULL = 0;
+
+const int INT8_MAX = 127;
+
+const int INT16_MAX = 32767;
+
+const int INT32_MAX = 2147483647;
+
+const int INT64_MAX = 9223372036854775807;
+
+const int INT8_MIN = -128;
+
+const int INT16_MIN = -32768;
+
+const int INT32_MIN = -2147483648;
+
+const int INT64_MIN = -9223372036854775808;
+
+const int UINT8_MAX = 255;
+
+const int UINT16_MAX = 65535;
+
+const int UINT32_MAX = 4294967295;
+
+const int UINT64_MAX = -1;
+
+const int INT_LEAST8_MIN = -128;
+
+const int INT_LEAST16_MIN = -32768;
+
+const int INT_LEAST32_MIN = -2147483648;
+
+const int INT_LEAST64_MIN = -9223372036854775808;
+
+const int INT_LEAST8_MAX = 127;
+
+const int INT_LEAST16_MAX = 32767;
+
+const int INT_LEAST32_MAX = 2147483647;
+
+const int INT_LEAST64_MAX = 9223372036854775807;
+
+const int UINT_LEAST8_MAX = 255;
+
+const int UINT_LEAST16_MAX = 65535;
+
+const int UINT_LEAST32_MAX = 4294967295;
+
+const int UINT_LEAST64_MAX = -1;
+
+const int INT_FAST8_MIN = -128;
+
+const int INT_FAST16_MIN = -32768;
+
+const int INT_FAST32_MIN = -2147483648;
+
+const int INT_FAST64_MIN = -9223372036854775808;
+
+const int INT_FAST8_MAX = 127;
+
+const int INT_FAST16_MAX = 32767;
+
+const int INT_FAST32_MAX = 2147483647;
+
+const int INT_FAST64_MAX = 9223372036854775807;
+
+const int UINT_FAST8_MAX = 255;
+
+const int UINT_FAST16_MAX = 65535;
+
+const int UINT_FAST32_MAX = 4294967295;
+
+const int UINT_FAST64_MAX = -1;
+
+const int INTPTR_MAX = 9223372036854775807;
+
+const int INTPTR_MIN = -9223372036854775808;
+
+const int UINTPTR_MAX = -1;
+
+const int INTMAX_MAX = 9223372036854775807;
+
+const int UINTMAX_MAX = -1;
+
+const int INTMAX_MIN = -9223372036854775808;
+
+const int PTRDIFF_MIN = -9223372036854775808;
+
+const int PTRDIFF_MAX = 9223372036854775807;
+
+const int SIZE_MAX = -1;
+
+const int RSIZE_MAX = 9223372036854775807;
+
+const int WCHAR_MAX = 2147483647;
+
+const int WCHAR_MIN = -2147483648;
+
+const int WINT_MIN = -2147483648;
+
+const int WINT_MAX = 2147483647;
+
+const int SIG_ATOMIC_MIN = -2147483648;
+
+const int SIG_ATOMIC_MAX = 2147483647;
+
+const int __DARWIN_WCHAR_MAX = 2147483647;
+
+const int __DARWIN_WCHAR_MIN = -2147483648;
+
+const int __DARWIN_WEOF = -1;
+
+const int _FORTIFY_SOURCE = 2;
+
+const int NULL = 0;
+
+const int __bool_true_false_are_defined = 1;
+
+const int true1 = 1;
+
+const int false1 = 0;
+
+const int GGML_FILE_MAGIC = 1734831468;
+
+const int GGML_FILE_VERSION = 1;
+
+const int GGML_QNT_VERSION = 2;
+
+const int GGML_QNT_VERSION_FACTOR = 1000;
+
+const int GGML_MAX_DIMS = 4;
+
+const int GGML_MAX_NODES = 4096;
+
+const int GGML_MAX_PARAMS = 256;
+
+const int GGML_MAX_CONTEXTS = 64;
+
+const int GGML_MAX_SRC = 6;
+
+const int GGML_MAX_NAME = 64;
+
+const int GGML_MAX_OP_PARAMS = 32;
+
+const int GGML_DEFAULT_N_THREADS = 4;
+
+const int GGML_MEM_ALIGN = 16;
+
+const int GGML_EXIT_SUCCESS = 0;
+
+const int GGML_EXIT_ABORTED = 1;
+
+const int GGUF_MAGIC = 1179993927;
+
+const int GGUF_VERSION = 2;
+
+const int GGUF_DEFAULT_ALIGNMENT = 32;
+
+const int GGML_GRAPH_HASHTABLE_SIZE = 8273;
+
+const int GGML_N_TASKS_MAX = -1;
 
 const int LLAMA_MAX_DEVICES = 1;
+
+const int __API_TO_BE_DEPRECATED = 100000;
+
+const int __API_TO_BE_DEPRECATED_MACOS = 100000;
+
+const int __API_TO_BE_DEPRECATED_IOS = 100000;
+
+const int __API_TO_BE_DEPRECATED_MACCATALYST = 100000;
+
+const int __API_TO_BE_DEPRECATED_WATCHOS = 100000;
+
+const int __API_TO_BE_DEPRECATED_TVOS = 100000;
+
+const int __API_TO_BE_DEPRECATED_DRIVERKIT = 100000;
+
+const int __API_TO_BE_DEPRECATED_XROS = 100000;
+
+const int __MAC_10_0 = 1000;
+
+const int __MAC_10_1 = 1010;
+
+const int __MAC_10_2 = 1020;
+
+const int __MAC_10_3 = 1030;
+
+const int __MAC_10_4 = 1040;
+
+const int __MAC_10_5 = 1050;
+
+const int __MAC_10_6 = 1060;
+
+const int __MAC_10_7 = 1070;
+
+const int __MAC_10_8 = 1080;
+
+const int __MAC_10_9 = 1090;
+
+const int __MAC_10_10 = 101000;
+
+const int __MAC_10_10_2 = 101002;
+
+const int __MAC_10_10_3 = 101003;
+
+const int __MAC_10_11 = 101100;
+
+const int __MAC_10_11_2 = 101102;
+
+const int __MAC_10_11_3 = 101103;
+
+const int __MAC_10_11_4 = 101104;
+
+const int __MAC_10_12 = 101200;
+
+const int __MAC_10_12_1 = 101201;
+
+const int __MAC_10_12_2 = 101202;
+
+const int __MAC_10_12_4 = 101204;
+
+const int __MAC_10_13 = 101300;
+
+const int __MAC_10_13_1 = 101301;
+
+const int __MAC_10_13_2 = 101302;
+
+const int __MAC_10_13_4 = 101304;
+
+const int __MAC_10_14 = 101400;
+
+const int __MAC_10_14_1 = 101401;
+
+const int __MAC_10_14_4 = 101404;
+
+const int __MAC_10_14_5 = 101405;
+
+const int __MAC_10_14_6 = 101406;
+
+const int __MAC_10_15 = 101500;
+
+const int __MAC_10_15_1 = 101501;
+
+const int __MAC_10_15_4 = 101504;
+
+const int __MAC_10_16 = 101600;
+
+const int __MAC_11_0 = 110000;
+
+const int __MAC_11_1 = 110100;
+
+const int __MAC_11_3 = 110300;
+
+const int __MAC_11_4 = 110400;
+
+const int __MAC_11_5 = 110500;
+
+const int __MAC_11_6 = 110600;
+
+const int __MAC_12_0 = 120000;
+
+const int __MAC_12_1 = 120100;
+
+const int __MAC_12_2 = 120200;
+
+const int __MAC_12_3 = 120300;
+
+const int __MAC_12_4 = 120400;
+
+const int __MAC_12_5 = 120500;
+
+const int __MAC_13_0 = 130000;
+
+const int __MAC_13_1 = 130100;
+
+const int __MAC_13_2 = 130200;
+
+const int __MAC_13_3 = 130300;
+
+const int __MAC_13_4 = 130400;
+
+const int __MAC_14_0 = 140000;
+
+const int __IPHONE_2_0 = 20000;
+
+const int __IPHONE_2_1 = 20100;
+
+const int __IPHONE_2_2 = 20200;
+
+const int __IPHONE_3_0 = 30000;
+
+const int __IPHONE_3_1 = 30100;
+
+const int __IPHONE_3_2 = 30200;
+
+const int __IPHONE_4_0 = 40000;
+
+const int __IPHONE_4_1 = 40100;
+
+const int __IPHONE_4_2 = 40200;
+
+const int __IPHONE_4_3 = 40300;
+
+const int __IPHONE_5_0 = 50000;
+
+const int __IPHONE_5_1 = 50100;
+
+const int __IPHONE_6_0 = 60000;
+
+const int __IPHONE_6_1 = 60100;
+
+const int __IPHONE_7_0 = 70000;
+
+const int __IPHONE_7_1 = 70100;
+
+const int __IPHONE_8_0 = 80000;
+
+const int __IPHONE_8_1 = 80100;
+
+const int __IPHONE_8_2 = 80200;
+
+const int __IPHONE_8_3 = 80300;
+
+const int __IPHONE_8_4 = 80400;
+
+const int __IPHONE_9_0 = 90000;
+
+const int __IPHONE_9_1 = 90100;
+
+const int __IPHONE_9_2 = 90200;
+
+const int __IPHONE_9_3 = 90300;
+
+const int __IPHONE_10_0 = 100000;
+
+const int __IPHONE_10_1 = 100100;
+
+const int __IPHONE_10_2 = 100200;
+
+const int __IPHONE_10_3 = 100300;
+
+const int __IPHONE_11_0 = 110000;
+
+const int __IPHONE_11_1 = 110100;
+
+const int __IPHONE_11_2 = 110200;
+
+const int __IPHONE_11_3 = 110300;
+
+const int __IPHONE_11_4 = 110400;
+
+const int __IPHONE_12_0 = 120000;
+
+const int __IPHONE_12_1 = 120100;
+
+const int __IPHONE_12_2 = 120200;
+
+const int __IPHONE_12_3 = 120300;
+
+const int __IPHONE_12_4 = 120400;
+
+const int __IPHONE_13_0 = 130000;
+
+const int __IPHONE_13_1 = 130100;
+
+const int __IPHONE_13_2 = 130200;
+
+const int __IPHONE_13_3 = 130300;
+
+const int __IPHONE_13_4 = 130400;
+
+const int __IPHONE_13_5 = 130500;
+
+const int __IPHONE_13_6 = 130600;
+
+const int __IPHONE_13_7 = 130700;
+
+const int __IPHONE_14_0 = 140000;
+
+const int __IPHONE_14_1 = 140100;
+
+const int __IPHONE_14_2 = 140200;
+
+const int __IPHONE_14_3 = 140300;
+
+const int __IPHONE_14_5 = 140500;
+
+const int __IPHONE_14_4 = 140400;
+
+const int __IPHONE_14_6 = 140600;
+
+const int __IPHONE_14_7 = 140700;
+
+const int __IPHONE_14_8 = 140800;
+
+const int __IPHONE_15_0 = 150000;
+
+const int __IPHONE_15_1 = 150100;
+
+const int __IPHONE_15_2 = 150200;
+
+const int __IPHONE_15_3 = 150300;
+
+const int __IPHONE_15_4 = 150400;
+
+const int __IPHONE_15_5 = 150500;
+
+const int __IPHONE_15_6 = 150600;
+
+const int __IPHONE_16_0 = 160000;
+
+const int __IPHONE_16_1 = 160100;
+
+const int __IPHONE_16_2 = 160200;
+
+const int __IPHONE_16_3 = 160300;
+
+const int __IPHONE_16_4 = 160400;
+
+const int __IPHONE_16_5 = 160500;
+
+const int __IPHONE_17_0 = 170000;
+
+const int __WATCHOS_1_0 = 10000;
+
+const int __WATCHOS_2_0 = 20000;
+
+const int __WATCHOS_2_1 = 20100;
+
+const int __WATCHOS_2_2 = 20200;
+
+const int __WATCHOS_3_0 = 30000;
+
+const int __WATCHOS_3_1 = 30100;
+
+const int __WATCHOS_3_1_1 = 30101;
+
+const int __WATCHOS_3_2 = 30200;
+
+const int __WATCHOS_4_0 = 40000;
+
+const int __WATCHOS_4_1 = 40100;
+
+const int __WATCHOS_4_2 = 40200;
+
+const int __WATCHOS_4_3 = 40300;
+
+const int __WATCHOS_5_0 = 50000;
+
+const int __WATCHOS_5_1 = 50100;
+
+const int __WATCHOS_5_2 = 50200;
+
+const int __WATCHOS_5_3 = 50300;
+
+const int __WATCHOS_6_0 = 60000;
+
+const int __WATCHOS_6_1 = 60100;
+
+const int __WATCHOS_6_2 = 60200;
+
+const int __WATCHOS_7_0 = 70000;
+
+const int __WATCHOS_7_1 = 70100;
+
+const int __WATCHOS_7_2 = 70200;
+
+const int __WATCHOS_7_3 = 70300;
+
+const int __WATCHOS_7_4 = 70400;
+
+const int __WATCHOS_7_5 = 70500;
+
+const int __WATCHOS_7_6 = 70600;
+
+const int __WATCHOS_8_0 = 80000;
+
+const int __WATCHOS_8_1 = 80100;
+
+const int __WATCHOS_8_3 = 80300;
+
+const int __WATCHOS_8_4 = 80400;
+
+const int __WATCHOS_8_5 = 80500;
+
+const int __WATCHOS_8_6 = 80600;
+
+const int __WATCHOS_8_7 = 80700;
+
+const int __WATCHOS_9_0 = 90000;
+
+const int __WATCHOS_9_1 = 90100;
+
+const int __WATCHOS_9_2 = 90200;
+
+const int __WATCHOS_9_3 = 90300;
+
+const int __WATCHOS_9_4 = 90400;
+
+const int __WATCHOS_9_5 = 90500;
+
+const int __WATCHOS_10_0 = 100000;
+
+const int __TVOS_9_0 = 90000;
+
+const int __TVOS_9_1 = 90100;
+
+const int __TVOS_9_2 = 90200;
+
+const int __TVOS_10_0 = 100000;
+
+const int __TVOS_10_0_1 = 100001;
+
+const int __TVOS_10_1 = 100100;
+
+const int __TVOS_10_2 = 100200;
+
+const int __TVOS_11_0 = 110000;
+
+const int __TVOS_11_1 = 110100;
+
+const int __TVOS_11_2 = 110200;
+
+const int __TVOS_11_3 = 110300;
+
+const int __TVOS_11_4 = 110400;
+
+const int __TVOS_12_0 = 120000;
+
+const int __TVOS_12_1 = 120100;
+
+const int __TVOS_12_2 = 120200;
+
+const int __TVOS_12_3 = 120300;
+
+const int __TVOS_12_4 = 120400;
+
+const int __TVOS_13_0 = 130000;
+
+const int __TVOS_13_2 = 130200;
+
+const int __TVOS_13_3 = 130300;
+
+const int __TVOS_13_4 = 130400;
+
+const int __TVOS_14_0 = 140000;
+
+const int __TVOS_14_1 = 140100;
+
+const int __TVOS_14_2 = 140200;
+
+const int __TVOS_14_3 = 140300;
+
+const int __TVOS_14_5 = 140500;
+
+const int __TVOS_14_6 = 140600;
+
+const int __TVOS_14_7 = 140700;
+
+const int __TVOS_15_0 = 150000;
+
+const int __TVOS_15_1 = 150100;
+
+const int __TVOS_15_2 = 150200;
+
+const int __TVOS_15_3 = 150300;
+
+const int __TVOS_15_4 = 150400;
+
+const int __TVOS_15_5 = 150500;
+
+const int __TVOS_15_6 = 150600;
+
+const int __TVOS_16_0 = 160000;
+
+const int __TVOS_16_1 = 160100;
+
+const int __TVOS_16_2 = 160200;
+
+const int __TVOS_16_3 = 160300;
+
+const int __TVOS_16_4 = 160400;
+
+const int __TVOS_16_5 = 160500;
+
+const int __TVOS_17_0 = 170000;
+
+const int __BRIDGEOS_2_0 = 20000;
+
+const int __BRIDGEOS_3_0 = 30000;
+
+const int __BRIDGEOS_3_1 = 30100;
+
+const int __BRIDGEOS_3_4 = 30400;
+
+const int __BRIDGEOS_4_0 = 40000;
+
+const int __BRIDGEOS_4_1 = 40100;
+
+const int __BRIDGEOS_5_0 = 50000;
+
+const int __BRIDGEOS_5_1 = 50100;
+
+const int __BRIDGEOS_5_3 = 50300;
+
+const int __BRIDGEOS_6_0 = 60000;
+
+const int __BRIDGEOS_6_2 = 60200;
+
+const int __BRIDGEOS_6_4 = 60400;
+
+const int __BRIDGEOS_6_5 = 60500;
+
+const int __BRIDGEOS_6_6 = 60600;
+
+const int __BRIDGEOS_7_0 = 70000;
+
+const int __BRIDGEOS_7_1 = 70100;
+
+const int __BRIDGEOS_7_2 = 70200;
+
+const int __BRIDGEOS_7_3 = 70300;
+
+const int __BRIDGEOS_7_4 = 70400;
+
+const int __BRIDGEOS_8_0 = 80000;
+
+const int __DRIVERKIT_19_0 = 190000;
+
+const int __DRIVERKIT_20_0 = 200000;
+
+const int __DRIVERKIT_21_0 = 210000;
+
+const int __DRIVERKIT_22_0 = 220000;
+
+const int __DRIVERKIT_22_4 = 220400;
+
+const int __DRIVERKIT_22_5 = 220500;
+
+const int __DRIVERKIT_23_0 = 230000;
+
+const int __XROS_1_0 = 10000;
+
+const int MAC_OS_X_VERSION_10_0 = 1000;
+
+const int MAC_OS_X_VERSION_10_1 = 1010;
+
+const int MAC_OS_X_VERSION_10_2 = 1020;
+
+const int MAC_OS_X_VERSION_10_3 = 1030;
+
+const int MAC_OS_X_VERSION_10_4 = 1040;
+
+const int MAC_OS_X_VERSION_10_5 = 1050;
+
+const int MAC_OS_X_VERSION_10_6 = 1060;
+
+const int MAC_OS_X_VERSION_10_7 = 1070;
+
+const int MAC_OS_X_VERSION_10_8 = 1080;
+
+const int MAC_OS_X_VERSION_10_9 = 1090;
+
+const int MAC_OS_X_VERSION_10_10 = 101000;
+
+const int MAC_OS_X_VERSION_10_10_2 = 101002;
+
+const int MAC_OS_X_VERSION_10_10_3 = 101003;
+
+const int MAC_OS_X_VERSION_10_11 = 101100;
+
+const int MAC_OS_X_VERSION_10_11_2 = 101102;
+
+const int MAC_OS_X_VERSION_10_11_3 = 101103;
+
+const int MAC_OS_X_VERSION_10_11_4 = 101104;
+
+const int MAC_OS_X_VERSION_10_12 = 101200;
+
+const int MAC_OS_X_VERSION_10_12_1 = 101201;
+
+const int MAC_OS_X_VERSION_10_12_2 = 101202;
+
+const int MAC_OS_X_VERSION_10_12_4 = 101204;
+
+const int MAC_OS_X_VERSION_10_13 = 101300;
+
+const int MAC_OS_X_VERSION_10_13_1 = 101301;
+
+const int MAC_OS_X_VERSION_10_13_2 = 101302;
+
+const int MAC_OS_X_VERSION_10_13_4 = 101304;
+
+const int MAC_OS_X_VERSION_10_14 = 101400;
+
+const int MAC_OS_X_VERSION_10_14_1 = 101401;
+
+const int MAC_OS_X_VERSION_10_14_4 = 101404;
+
+const int MAC_OS_X_VERSION_10_14_5 = 101405;
+
+const int MAC_OS_X_VERSION_10_14_6 = 101406;
+
+const int MAC_OS_X_VERSION_10_15 = 101500;
+
+const int MAC_OS_X_VERSION_10_15_1 = 101501;
+
+const int MAC_OS_X_VERSION_10_15_4 = 101504;
+
+const int MAC_OS_X_VERSION_10_16 = 101600;
+
+const int MAC_OS_VERSION_11_0 = 110000;
+
+const int MAC_OS_VERSION_11_1 = 110100;
+
+const int MAC_OS_VERSION_11_3 = 110300;
+
+const int MAC_OS_VERSION_11_4 = 110400;
+
+const int MAC_OS_VERSION_11_5 = 110500;
+
+const int MAC_OS_VERSION_11_6 = 110600;
+
+const int MAC_OS_VERSION_12_0 = 120000;
+
+const int MAC_OS_VERSION_12_1 = 120100;
+
+const int MAC_OS_VERSION_12_2 = 120200;
+
+const int MAC_OS_VERSION_12_3 = 120300;
+
+const int MAC_OS_VERSION_12_4 = 120400;
+
+const int MAC_OS_VERSION_12_5 = 120500;
+
+const int MAC_OS_VERSION_13_0 = 130000;
+
+const int MAC_OS_VERSION_13_1 = 130100;
+
+const int MAC_OS_VERSION_13_2 = 130200;
+
+const int MAC_OS_VERSION_13_3 = 130300;
+
+const int MAC_OS_VERSION_13_4 = 130400;
+
+const int MAC_OS_VERSION_14_0 = 140000;
+
+const int __MAC_OS_X_VERSION_MIN_REQUIRED = 130000;
+
+const int __MAC_OS_X_VERSION_MAX_ALLOWED = 140000;
+
+const int __ENABLE_LEGACY_MAC_AVAILABILITY = 1;
+
+const int RENAME_SECLUDE = 1;
+
+const int RENAME_SWAP = 2;
+
+const int RENAME_EXCL = 4;
+
+const int RENAME_RESERVED1 = 8;
+
+const int RENAME_NOFOLLOW_ANY = 16;
+
+const int SEEK_SET = 0;
+
+const int SEEK_CUR = 1;
+
+const int SEEK_END = 2;
+
+const int SEEK_HOLE = 3;
+
+const int SEEK_DATA = 4;
+
+const int __SLBF = 1;
+
+const int __SNBF = 2;
+
+const int __SRD = 4;
+
+const int __SWR = 8;
+
+const int __SRW = 16;
+
+const int __SEOF = 32;
+
+const int __SERR = 64;
+
+const int __SMBF = 128;
+
+const int __SAPP = 256;
+
+const int __SSTR = 512;
+
+const int __SOPT = 1024;
+
+const int __SNPT = 2048;
+
+const int __SOFF = 4096;
+
+const int __SMOD = 8192;
+
+const int __SALC = 16384;
+
+const int __SIGN = 32768;
+
+const int _IOFBF = 0;
+
+const int _IOLBF = 1;
+
+const int _IONBF = 2;
+
+const int BUFSIZ = 1024;
+
+const int EOF = -1;
+
+const int FOPEN_MAX = 20;
+
+const int FILENAME_MAX = 1024;
+
+const String P_tmpdir = '/var/tmp/';
+
+const int L_tmpnam = 1024;
+
+const int TMP_MAX = 308915776;
+
+const int L_ctermid = 1024;
 
 const int LLAMA_DEFAULT_SEED = 4294967295;
 

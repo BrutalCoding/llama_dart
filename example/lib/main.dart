@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:llama_dart/llama_dart.dart' as llama_dart;
 
 void main() {
@@ -15,14 +15,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late int sumResult;
-  late Future<int> sumAsyncResult;
+  // late int sumResult;
+  // late Future<int> sumAsyncResult;
+  late Future<String> llamaResult;
 
   @override
   void initState() {
     super.initState();
-    sumResult = llama_dart.sum(1, 2);
-    sumAsyncResult = llama_dart.sumAsync(3, 4);
+    // sumResult = llama_dart.sum(1, 2);
+    // sumAsyncResult = llama_dart.sumAsync(3, 4);
+    llamaResult = llama_dart.talk();
   }
 
   @override
@@ -46,19 +48,32 @@ class _MyAppState extends State<MyApp> {
                   textAlign: TextAlign.center,
                 ),
                 spacerSmall,
-                Text(
-                  'sum(1, 2) = $sumResult',
-                  style: textStyle,
-                  textAlign: TextAlign.center,
-                ),
-                spacerSmall,
-                FutureBuilder<int>(
-                  future: sumAsyncResult,
-                  builder: (BuildContext context, AsyncSnapshot<int> value) {
+                // Text(
+                //   'sum(1, 2) = $sumResult',
+                //   style: textStyle,
+                //   textAlign: TextAlign.center,
+                // ),
+                // spacerSmall,
+                // FutureBuilder<int>(
+                //   future: sumAsyncResult,
+                //   builder: (BuildContext context, AsyncSnapshot<int> value) {
+                //     final displayValue =
+                //         (value.hasData) ? value.data : 'loading';
+                //     return Text(
+                //       'await sumAsync(3, 4) = $displayValue',
+                //       style: textStyle,
+                //       textAlign: TextAlign.center,
+                //     );
+                //   },
+                // ),
+                // spacerSmall,
+                FutureBuilder<String>(
+                  future: llamaResult,
+                  builder: (BuildContext context, AsyncSnapshot<String> value) {
                     final displayValue =
                         (value.hasData) ? value.data : 'loading';
                     return Text(
-                      'await sumAsync(3, 4) = $displayValue',
+                      'await talk() = $displayValue',
                       style: textStyle,
                       textAlign: TextAlign.center,
                     );
