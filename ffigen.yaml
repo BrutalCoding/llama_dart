@@ -8,8 +8,10 @@ output: 'lib/llama_dart_bindings_generated.dart'
 headers:
   entry-points:
     - 'src/llama_dart.h'
+    - 'src/llama_cpp/llama.h'
   include-directives:
     - 'src/llama_dart.h'
+    - 'src/llama_cpp/llama.h'
 ffi-native:
 preamble: |
   // ignore_for_file: always_specify_types
