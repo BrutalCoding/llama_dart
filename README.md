@@ -1,20 +1,16 @@
 # llama_dart
 
-**Important:**
+## Known Issues
 
-Native assets support in Flutter MacOS, iOS, and Linux is available on the master channel behind an experimental flag: `flutter config --enable-native-assets` and `flutter create --template=package_ffi [package name]`. See [this comment](https://github.com/flutter/flutter/issues/129757#issue-1780402845) for more details.
+If you encounter the error 'Couldn't resolve native function 'llama_context_default_params' on macOS ARM64, please refer to [Issue #2](https://github.com/BrutalCoding/llama_dart/issues/2) for details and updates. Contributions and insights are welcome.
 
 ## Description
 
 **llama_dart** is an experimental Flutter plugin designed to seamlessly integrate the capabilities of llama.cpp into your Flutter or Dart apps. Please note that this package is currently in development and may not be fully functional.
 
-## Known Issue
+## Steps to Run
 
 **Important:** Native assets support in Flutter MacOS, iOS, and Linux is available on the master channel behind an experimental flag: `flutter config --enable-native-assets` and `flutter create --template=package_ffi [package name]`. See [this comment](https://github.com/flutter/flutter/issues/129757#issue-1780402845) for more details.
-
-If you encounter the error 'Couldn't resolve native function 'llama_context_default_params' on macOS ARM64, please refer to [Issue #2](https://github.com/BrutalCoding/llama_dart/issues/2) for details and updates. Contributions and insights are welcome.
-
-## Steps to Run
 
 Here are the steps to run **llama_dart**:
 
