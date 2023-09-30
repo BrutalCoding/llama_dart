@@ -1,14 +1,24 @@
-# Run with `flutter pub run ffigen --config ffigen.yaml`.
-name: LlamaDartBindings
-description: |
-  Bindings for `src/llama_dart.h`.
-
-  Regenerate bindings with `flutter pub run ffigen --config ffigen.yaml`.
-output: 'lib/llama_dart_bindings_generated.dart'
+name: LlamaDart
+description: "Supercharge your app with offline AI capabilities, powered by llama.cpp."
+output: 'lib/llama_dart.dart'
 headers:
   entry-points:
     - 'src/llama_cpp/llama.h'
-ffi-native:
+    - 'src/llama_cpp/ggml.h'  # Add this if ggml_context is defined here
+    - 'src/llama_cpp/ggml-*.h'  # Add this if ggml_context is defined here
+    - 'src/llama_cpp/k_quants.h'  # Add this if ggml_context is defined here
+    - 'src/llama_cpp/common/*.h'  # Add this if ggml_context is defined here
+exclude-all-by-default: false
+# functions:
+#   leaf:
+#     include:
+#       - '.*'
+structs:
+  rename:
+    '_*(.*)': '$1'
+globals:
+  rename:
+    '_*(.*)': '$1'
 preamble: |
   // ignore_for_file: always_specify_types
   // ignore_for_file: camel_case_types
@@ -16,3 +26,8 @@ preamble: |
 comments:
   style: any
   length: full
+compiler-opts-automatic:
+  macos:
+    include-c-standard-library: true
+compiler-opts:
+  - '-Wno-nullability-completeness'

@@ -37,10 +37,10 @@ packages:
     dependency: transitive
     description:
       name: cli_config
-      sha256: "76910209e4aee158f5e26721509c98d7cbb97085da637f62b7c461298033752d"
+      sha256: "65c7830649e1f8247660f1b783effb460255d6e2c1ac94eb823cf1f84e59b288"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.1"
+    version: "0.1.2"
   clock:
     dependency: transitive
     description:
@@ -267,10 +267,10 @@ packages:
     dependency: transitive
     description:
       name: web
-      sha256: "14f1f70c51119012600c5f1f60ca68efda5a9b6077748163c6af2893ec5df8fc"
+      sha256: ccbbfbf29732ee1b391c4c6d13e7032d851f675f47365e81904e4c6fd669c854
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.1-beta"
+    version: "0.2.2-beta"
   yaml:
     dependency: transitive
     description:
